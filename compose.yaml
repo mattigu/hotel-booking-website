@@ -1,0 +1,16 @@
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: bd2
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
