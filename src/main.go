@@ -6,6 +6,7 @@ import (
 	"os"
 	"net/http"
 	"github.com/jackc/pgx/v5"
+	"github.com/joho/godotenv"
 )
 
 func handler(w http.ResponseWriter, r *http.Request){
@@ -13,8 +14,9 @@ func handler(w http.ResponseWriter, r *http.Request){
 }
 
 func main(){
+	godotenv.Load(".env")
 	// urlExample := "postgres://username:password@localhost:5432/database_name"
-	conn, err := pgx.Connect(context.Background(), "postgresql://root:root@db:5432/bd2")
+	conn, err := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)
@@ -25,8 +27,8 @@ func main(){
 
 	var name string
 	err = conn.QueryRow(context.Background(), "select 'HELLO WORLD!'").Scan(&name)
-	fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 	if err != nil {
+		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
 		os.Exit(1)
 	}
