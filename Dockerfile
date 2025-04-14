@@ -1,19 +1,20 @@
-FROM golang:1.23-alpine
+FROM golang:1.24-alpine
 
 WORKDIR /app
 
-RUN go install github.com/air-verse/air@latest
 
 COPY go.* ./
 
-RUN go mod download
 
 COPY ./src/*.go ./
 COPY . .
 
-# RUN go build -o main main.go
+RUN go install github.com/air-verse/air@latest
+RUN go get github.com/jackc/pgx/v5@latest
+#RUN go get github.com/jackc/pgx/v5/pgxpool
+#RUN go mod tidy
+RUN go mod download
 
 EXPOSE 8888
 
-#CMD ["./main"]
 CMD ["air", "-c", ".air.toml"]
