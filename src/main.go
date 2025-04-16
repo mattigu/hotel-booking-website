@@ -3,17 +3,24 @@ package main
 import (
 	"context"
 	"fmt"
-	"os"
 	"net/http"
+	"os"
+
 	"github.com/jackc/pgx/v5"
 	"github.com/joho/godotenv"
 )
 
-func handler(w http.ResponseWriter, r *http.Request){
+// Temporary CORS setup for frontend test
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
+}
+
+func handler(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	fmt.Fprintf(w, "hello world\n")
 }
 
-func main(){
+func main() {
 	godotenv.Load(".env")
 	// urlExample := "postgres://username:password@localhost:5432/database_name"
 	conn, err := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
