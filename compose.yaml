@@ -1,10 +1,10 @@
 services:
   web:
-    build: .
+    build: ./backend
     ports:
       - "3000:3000"
     volumes:
-      - ./:/app
+      - ./backend/src:/app
     depends_on:
       - db
   db:
