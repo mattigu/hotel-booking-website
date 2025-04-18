@@ -37,7 +37,7 @@ func postTest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Fprintf(w, "Received\n")
-	fmt.Print("Message received ", t)
+	fmt.Println("Message received ", t)
 }
 
 func main() {
