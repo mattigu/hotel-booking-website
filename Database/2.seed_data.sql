@@ -1,0 +1,1 @@
+insert into teststruct(name) values ('jajo');
