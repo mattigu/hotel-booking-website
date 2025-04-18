@@ -21,10 +21,10 @@ async function testBackendGet() {
 async function testBackendPost() {
 	const url = API_URL + "/test/postTest"
 	const request = new Request(url, {
-        method: "POST",
+		method: "POST",
 		body: JSON.stringify({
-			"id" : 123,
-			"name" : "jajo"
+			"id": 123,
+			"name": "jajo"
 		})
 	})
 	try {
@@ -47,12 +47,12 @@ const testPost = async () => postMessage.value = await testBackendPost()
 </script>
 
 <template>
-
-<button @click="testGet()">Get</button>
-<button @click="testPost()">Post</button>
-<!-- <button @click="testBackend()">Fetch</button> -->
-<h1>Message from db: {{ getMessage }}</h1>
-<h1>Post response db: {{ postMessage }}</h1>
-
+  <button @click="testGet() ">
+    Get
+  </button>
+  <button @click="testPost()">
+    Post
+  </button>
+  <h1>Message from db: {{ getMessage }}</h1>
+  <h1>Post response db: {{ postMessage }}</h1>
 </template>
-
