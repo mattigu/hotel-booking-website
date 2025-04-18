@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
@@ -15,9 +16,28 @@ func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
+func getTest(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
-	fmt.Fprintf(w, "hello world\n")
+	fmt.Fprintf(w, "GET Hello world\n")
+}
+
+func postTest(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
+	type testStruct struct {
+		Id   int64  `json:"id"`
+		Name string `json:"name"`
+	}
+
+	var t testStruct
+
+	err := json.NewDecoder(r.Body).Decode(&t)
+	_ = err
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	fmt.Fprintf(w, "Received\n")
+	fmt.Print("Message received ", t)
 }
 
 func main() {
@@ -41,6 +61,8 @@ func main() {
 	}
 	fmt.Println(name)
 
-	http.HandleFunc("/", handler)
+	http.HandleFunc("GET /test/getTest", getTest)
+	http.HandleFunc("POST /test/postTest", postTest)
+
 	http.ListenAndServe(":3000", nil)
 }
