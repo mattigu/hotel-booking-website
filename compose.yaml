@@ -16,8 +16,14 @@ services:
       POSTGRES_DB: bd2
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
+    volumes:
+      - ./backend/db/src/init.sql:/docker-entrypoint-initdb.d/init.sql
   adminer:
     image: adminer
     restart: always
     ports:
       - 8080:8080
+  frontent:
+    build: ./frontend
+    ports:
+      - 8081:8081
