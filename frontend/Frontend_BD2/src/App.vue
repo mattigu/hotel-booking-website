@@ -27,7 +27,7 @@ const loadTest = async () => dbTest.value = await testBackend()
 
 <button @click="loadTest()">Fetch</button>
 <!-- <button @click="testBackend()">Fetch</button> -->
-<h1>Message from db: {{ dbTest }}</h1>
+<h1>Message from dfddb: {{ dbTest }}</h1>
 
 </template>
 
