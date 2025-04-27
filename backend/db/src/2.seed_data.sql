@@ -1,1 +1,1 @@
-insert into teststruct(name) values ('jajo');
+insert into hotel(name) values ('jajo');
