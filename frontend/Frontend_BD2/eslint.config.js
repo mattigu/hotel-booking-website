@@ -4,21 +4,21 @@ import js from '@eslint/js'
 import pluginVue from 'eslint-plugin-vue'
 
 export default defineConfig([
-  {
-    name: 'app/files-to-lint',
-    files: ['**/*.{js,mjs,jsx,vue}'],
-  },
+	{
+		name: 'app/files-to-lint',
+		files: ['**/*.{js,mjs,jsx,vue}'],
+	},
 
-  globalIgnores(['**/dist/**', '**/dist-ssr/**', '**/coverage/**']),
+	globalIgnores(['**/dist/**', '**/dist-ssr/**', '**/coverage/**']),
 
-  {
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-      },
-    },
-  },
+	{
+		languageOptions: {
+			globals: {
+				...globals.browser,
+			},
+		},
+	},
 
-  js.configs.recommended,
-  ...pluginVue.configs['flat/essential'],
+	js.configs.recommended,
+	...pluginVue.configs['flat/strongly-recommended'],
 ])

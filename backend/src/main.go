@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
@@ -10,15 +11,33 @@ import (
 	"github.com/joho/godotenv"
 )
 
+type testStruct struct {
+	Id   int64  `json:"id"`
+	Name string `json:"name"`
+}
+
 // Temporary CORS setup for frontend test
 func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
+func getTest(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
-	println("info from handler")
+	fmt.Fprintf(w, "GET Hello world\n")
+}
 
+func postTest(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
+
+	var t testStruct
+	err := json.NewDecoder(r.Body).Decode(&t)
+	_ = err
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	fmt.Fprintf(w, "Received\n")
+	fmt.Println("Message received ", t)
 }
 
 func main() {
@@ -41,7 +60,29 @@ func main() {
 	}
 	fmt.Println(name)
 
-	http.HandleFunc("/", handler)
-	http.HandleFunc("/get", handler)
+	// Test for seed data in db
+	rows, err := conn.Query(context.Background(), "select id, name from teststruct")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Can't retrieve rows from db %v\n", err)
+		os.Exit(1)
+	}
+	defer rows.Close()
+	var tests []testStruct
+	for rows.Next() {
+		var test testStruct
+		err := rows.Scan(
+			&test.Id,
+			&test.Name,
+		)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error scanning rows %v\n", err)
+		}
+		tests = append(tests, test)
+	}
+	fmt.Printf("len=%d cap=%d %v\n", len(tests), cap(tests), tests)
+
+	http.HandleFunc("GET /test/getTest", getTest)
+	http.HandleFunc("POST /test/postTest", postTest)
+
 	http.ListenAndServe(":3000", nil)
 }
