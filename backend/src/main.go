@@ -50,16 +50,7 @@ func main() {
 	defer conn.Close(context.Background())
 
 	println("connected to database")
-
-	var name int
-	err = conn.QueryRow(context.Background(), "select value from test_table where id=2").Scan(&name)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
-		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
-		os.Exit(1)
-	}
-	fmt.Println(name)
-
+	
 	// Test for seed data in db
 	rows, err := conn.Query(context.Background(), "select id, name from teststruct")
 	if err != nil {

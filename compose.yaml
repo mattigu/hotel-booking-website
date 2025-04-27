@@ -17,7 +17,7 @@ services:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
     volumes:
-      - ./backend/db/src/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./backend/db/src:/docker-entrypoint-initdb.d
   adminer:
     image: adminer
     restart: always
