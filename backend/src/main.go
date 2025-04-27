@@ -16,19 +16,33 @@ type testStruct struct {
 	Name string `json:"name"`
 }
 
+func CORS(next http.HandlerFunc) http.HandlerFunc {
+	println("here")
+	return func(w http.ResponseWriter, r *http.Request) {
+	  w.Header().Add("Access-Control-Allow-Origin", "*")
+	  w.Header().Add("Access-Control-Allow-Credentials", "true")
+	  w.Header().Add("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+	  w.Header().Add("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+  
+	  if r.Method == "OPTIONS" {
+		  http.Error(w, "No Content", http.StatusNoContent)
+		  return
+	  }
+  
+	  next(w, r)
+	}
+}
+
 // Temporary CORS setup for frontend test
 func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
 }
 
 func getTest(w http.ResponseWriter, r *http.Request) {
-	enableCors(&w)
 	fmt.Fprintf(w, "GET Hello world\n")
 }
 
 func postTest(w http.ResponseWriter, r *http.Request) {
-	enableCors(&w)
-
 	var t testStruct
 	err := json.NewDecoder(r.Body).Decode(&t)
 	_ = err
@@ -72,8 +86,8 @@ func main() {
 	}
 	fmt.Printf("len=%d cap=%d %v\n", len(tests), cap(tests), tests)
 
-	http.HandleFunc("GET /test/getTest", getTest)
-	http.HandleFunc("POST /test/postTest", postTest)
+	http.HandleFunc("GET /test/getTest", CORS(getTest))
+	http.HandleFunc("POST /test/postTest", CORS(postTest))
 
 	http.ListenAndServe(":3000", nil)
 }
