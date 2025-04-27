@@ -1,1 +1,0 @@
-psql postgresql://root:root@db/bd2 -f create_schema.sql
