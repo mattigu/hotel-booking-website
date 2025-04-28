@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bd2_projekt/app_err"
 	"bd2_projekt/database"
 	"bd2_projekt/hotel"
 	"context"
@@ -27,9 +28,14 @@ func CORS(next http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
-// Temporary CORS setup for frontend test
-func enableCors(w *http.ResponseWriter) {
-	(*w).Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
+func errorHandler(f func(http.ResponseWriter, *http.Request) error) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		err := f(w, r)
+		if err != nil {
+			http.Error(w, err.Error(), app_err.HTTPStatus(err))
+			// Can add behaviour to hide internal app details in error message for unhandled errors
+		}
+	}
 }
 
 func main() {
@@ -42,7 +48,7 @@ func main() {
 
 	hotelHandler := hotel.NewHotelHandler(db)
 
-	http.HandleFunc("GET /hotels/getall", CORS(hotelHandler.GetAll))
+	http.HandleFunc("GET /hotels/getall", CORS(errorHandler(hotelHandler.GetAll)))
 
 	http.ListenAndServe(":3000", nil)
 	db.Close()

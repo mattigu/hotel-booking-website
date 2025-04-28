@@ -1,8 +1,11 @@
 package hotel
 
 import (
+	"bd2_projekt/app_err"
 	"bd2_projekt/database"
 	"encoding/json"
+
+	"errors"
 	"net/http"
 )
 
@@ -15,15 +18,11 @@ func NewHotelHandler(db *database.Database) *HotelHandler {
 	return &HotelHandler{s: s}
 }
 
-func (h *HotelHandler) GetAll(w http.ResponseWriter, r *http.Request) {
+func (h *HotelHandler) GetAll(w http.ResponseWriter, r *http.Request) error {
 	hotels, err := h.s.getAll()
-
-	// Think about this later !!
-	// https://www.reddit.com/r/golang/comments/1128rt5/error_handling_in_http_handlefuncs/
-
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+		return app_err.WithHTTPStatus(errors.New("error message"), http.StatusBadRequest)
 	}
-	err = json.NewEncoder(w).Encode(hotels)
+	// w.WriteHeader(http.Status...) Change status code here if needed
+	return json.NewEncoder(w).Encode(hotels)
 }
