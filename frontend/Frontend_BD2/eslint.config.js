@@ -8,8 +8,12 @@ export default defineConfig([
 		name: 'app/files-to-lint',
 		files: ['**/*.{js,mjs,jsx,vue}'],
 		rules: {
+			// Technically eslint formatting is deprecated but it's good enough for this
+			// The alternative is to setup prettier but I don't like it
 			"vue/html-indent": ["error", 2],
-			"vue/script-indent": ["error", "tab"]
+			"vue/script-indent": ["error", "tab"],
+			"no-multi-spaces": "error",
+			"no-trailing-spaces": "error"
 
 		}
 	},
