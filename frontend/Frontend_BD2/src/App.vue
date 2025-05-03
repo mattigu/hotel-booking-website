@@ -44,8 +44,15 @@ const testGet = async () => getMessage.value = await testBackendGet()
 </script>
 
 <template>
-  <button @click="testGet() ">
-    Get
-  </button>
+  <button @click="testGet() "> Get </button>
   <h1>Message from db: {{ getMessage }}</h1>
+
+  <h1>Router testing below</h1>
+  <nav>
+    <li><RouterLink to="/">Go to Home</RouterLink></li>
+    <li><RouterLink to="/hotel/123">Go to hotel with id=123</RouterLink></li>
+  </nav>
+  <main>
+    <RouterView />
+  </main>
 </template>
