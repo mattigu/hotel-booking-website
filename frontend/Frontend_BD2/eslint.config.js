@@ -7,6 +7,11 @@ export default defineConfig([
 	{
 		name: 'app/files-to-lint',
 		files: ['**/*.{js,mjs,jsx,vue}'],
+		rules: {
+			"vue/html-indent": ["error", 2],
+			"vue/script-indent": ["error", "tab"]
+
+		}
 	},
 
 	globalIgnores(['**/dist/**', '**/dist-ssr/**', '**/coverage/**']),
