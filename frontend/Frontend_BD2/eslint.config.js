@@ -13,7 +13,11 @@ export default defineConfig([
 			"vue/html-indent": ["error", 2],
 			"vue/script-indent": ["error", "tab"],
 			"no-multi-spaces": "error",
-			"no-trailing-spaces": "error"
+			"vue/multiline-html-element-content-newline": ["off", {
+				"ignoreWhenEmpty": true,
+				"ignores": ["pre", "textarea", ...INLINE_ELEMENTS],
+				"allowEmptyLines": false
+			}]
 
 		}
 	},
@@ -29,5 +33,5 @@ export default defineConfig([
 	},
 
 	js.configs.recommended,
-	...pluginVue.configs['flat/essential'],
+	...pluginVue.configs['flat/strongly-recommended'],
 ])
