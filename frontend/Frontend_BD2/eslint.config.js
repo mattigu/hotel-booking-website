@@ -2,23 +2,23 @@ import { defineConfig, globalIgnores } from 'eslint/config'
 import globals from 'globals'
 import js from '@eslint/js'
 import pluginVue from 'eslint-plugin-vue'
+import stylistic from '@stylistic/eslint-plugin'
 
 export default defineConfig([
+	...pluginVue.configs['flat/strongly-recommended'],
+	js.configs.recommended,
 	{
 		name: 'app/files-to-lint',
 		files: ['**/*.{js,mjs,jsx,vue}'],
+		plugins: {
+			'@stylistic': stylistic
+		},
 		rules: {
-			// Technically eslint formatting is deprecated but it's good enough for this
-			// The alternative is to setup prettier but I don't like it
+			"@stylistic/no-multi-spaces": "error",
+
 			"vue/html-indent": ["error", 2],
 			"vue/script-indent": ["error", "tab"],
-			"no-multi-spaces": "error",
-			"vue/multiline-html-element-content-newline": ["off", {
-				"ignoreWhenEmpty": true,
-				"ignores": ["pre", "textarea", ...INLINE_ELEMENTS],
-				"allowEmptyLines": false
-			}]
-
+			"vue/singleline-html-element-content-newline": "off"
 		}
 	},
 
@@ -31,7 +31,4 @@ export default defineConfig([
 			},
 		},
 	},
-
-	js.configs.recommended,
-	...pluginVue.configs['flat/strongly-recommended'],
 ])
