@@ -30,7 +30,7 @@ CREATE OR REPLACE PROCEDURE daily_update()
 LANGUAGE plpgsql
 AS $$
 BEGIN
-  PERFORM delete_past_due_reservations();
-  PERFORM calculate_hotel_ratings();
+  CALL delete_past_due_reservations();
+  CALL calculate_hotel_ratings();
 END;
 $$;

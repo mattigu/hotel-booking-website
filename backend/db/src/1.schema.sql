@@ -124,6 +124,12 @@ CREATE TABLE "hotel_ratings" (
     "current_rating" numeric(3, 2) NOT NULL
 );
 
+-- Do wywalenia
+create table teststruct(
+    id      int primary key generated always as identity,
+    name    text
+);
+
 ALTER TABLE "hotels" ADD FOREIGN KEY ("address_id") REFERENCES "addresses" ("id") ON DELETE CASCADE;
 
 ALTER TABLE "hotel_amenities" ADD FOREIGN KEY ("hotel_id") REFERENCES "hotels" ("id") ON DELETE CASCADE;

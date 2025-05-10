@@ -73,26 +73,21 @@ INSERT INTO "customers" ("name", "surname", "phone_number", "email") VALUES
 
 -- Dane dla tabeli payments
 INSERT INTO "payments" ("id", "payment_type", "due_date", "amount", "fulfilled") VALUES
-(1, 'Karta Kredytowa', '2023-12-01', 2000, true),
-(2, 'Przelew Bankowy', '2023-12-10', 1500, true),
-(3, 'PayPal', '2023-12-20', 1800, false);
+(1, 'Karta Kredytowa', '2025-05-01', 2000, false),
+(2, 'Przelew Bankowy', '2025-05-8', 1500, true),
+(3, 'PayPal', '2025-05-20', 1800, false);
 
 -- Dane dla tabeli reservations
-INSERT INTO "reservations" ("customer_id", "hotel_id", "room_ids", "start_date", "end_date", "payment_info_id") VALUES
-(1, 1, 1, '2023-12-01', '2023-12-05', 1),
-(2, 2, 2, '2023-12-10', '2023-12-15', 2),
-(3, 3, 3, '2023-12-20', '2023-12-25', 3);
+INSERT INTO "reservations" ("id", "customer_id", "hotel_id", "room_ids", "start_date", "end_date", "payment_info_id") VALUES
+(1, 1, 1, ARRAY[1], '2025-05-01', '2025-05-05', 1),
+(2, 2, 2, ARRAY[1, 2], '2025-05-8', '2025-05-15', 2),
+(3, 3, 3, ARRAY[3], '2025-05-20', '2025-05-25', 3);
 
--- Dane dla tabeli reservation_rooms
-INSERT INTO "reservation_rooms" ("reservation_id", "room_id") VALUES
-(1, 1),
-(2, 2),
-(3, 3);
 
 -- Dane dla tabeli promotions
 INSERT INTO "promotions" ("hotel_id", "start_date", "end_date", "discount_flat", "discount_pct") VALUES
-(1, '2023-12-01', '2023-12-10', NULL, 10),
-(2, '2023-12-15', '2023-12-20', 100, NULL);
+(1, '2025-05-01', '2025-05-8', NULL, 10),
+(2, '2025-05-15', '2025-05-20', 100, NULL);
 
 -- Dane dla tabeli reviews
 INSERT INTO "reviews" ("username", "hotel_id", "rating", "review_text") VALUES
@@ -102,10 +97,14 @@ INSERT INTO "reviews" ("username", "hotel_id", "rating", "review_text") VALUES
 
 -- Dane dla tabeli avg_price_history
 INSERT INTO "avg_price_history" ("hotel_id", "period_start", "period_end", "avg_price") VALUES
-(1, '2023-01-01', '2023-06-30', 500),
-(2, '2023-01-01', '2023-06-30', 400);
+(1, '2024-01-01', '2024-06-30', 500),
+(2, '2024-01-01', '2024-06-30', 400);
 
 -- Dane dla tabeli vacancy_history
 INSERT INTO "vacancy_history" ("hotel_id", "period_start", "period_end", "vacancies") VALUES
-(1, '2023-01-01', '2023-06-30', 20),
-(2, '2023-01-01', '2023-06-30', 15);
+(1, '2024-01-01', '2024-06-30', 20),
+(2, '2024-01-01', '2024-06-30', 15);
+
+
+-- Testowe dane
+insert into teststruct(name) values ('jajo');
