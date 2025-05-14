@@ -12,7 +12,7 @@ import { useRoute } from 'vue-router'
 // })
 
 async function getHotel(id) {
-	const request = new Request(`http://localhost:3000/hotels/getbyid?id=${ id }`, {
+	const request = new Request(`http://localhost:3000/hotels/getbyid/${ id }`, {
 		method: "GET",
 	});
 
@@ -30,7 +30,6 @@ async function getHotel(id) {
 }
 
 async function fetchData(id) {
-	console.log(id)
 	error.value = hotel.value = null
 	loading.value = true
 

@@ -28,12 +28,12 @@ func (h *HotelHandler) GetAll(w http.ResponseWriter, r *http.Request) error {
 }
 
 func (h *HotelHandler) GetById(w http.ResponseWriter, r *http.Request) error {
-	id := r.URL.Query().Get("id")
+	id := r.PathValue("id")
 	i, err := strconv.Atoi(id)
 	if err != nil {
 		return app_err.WithHTTPStatus(err, http.StatusBadRequest)
 	}
-	hotels, err := h.s.getById(int64(i))
+	hotels, err := h.s.getById(i)
 	if err != nil {
 		return app_err.WithHTTPStatus(err, http.StatusBadRequest)
 	}

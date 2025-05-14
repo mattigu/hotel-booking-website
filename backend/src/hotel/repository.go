@@ -37,7 +37,7 @@ func (r *hotelRepository) getAll() ([]Hotel, error) {
 	return hotels, nil
 }
 
-func (r *hotelRepository) getById(id int64) (Hotel, error) {
+func (r *hotelRepository) getById(id int) (Hotel, error) {
 	query := "select id, name, address_id, description, star_standard from hotels where id=@id"
 	args := pgx.NamedArgs{
 		"id": id,

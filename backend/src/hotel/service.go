@@ -17,6 +17,6 @@ func (s *hotelService) getAll() ([]Hotel, error) {
 	return s.r.getAll()
 }
 
-func (s *hotelService) getById(id int64) (Hotel, error) {
+func (s *hotelService) getById(id int) (Hotel, error) {
 	return s.r.getById(id)
 }
