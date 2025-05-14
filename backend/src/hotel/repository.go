@@ -12,7 +12,7 @@ type hotelRepository struct {
 }
 
 func (r *hotelRepository) getAll() ([]Hotel, error) {
-	rows, err := r.db.Pool().Query(context.Background(), "select id, name from hotel")
+	rows, err := r.db.Pool().Query(context.Background(), "select id, name from hotels")
 	if err != nil {
 		return nil, fmt.Errorf("unable to query hotels: %w", err)
 	}
@@ -22,7 +22,10 @@ func (r *hotelRepository) getAll() ([]Hotel, error) {
 		hotel := Hotel{}
 		err := rows.Scan(
 			&hotel.Id,
-			&hotel.Name)
+			&hotel.Name,
+			&hotel.AdressId,
+			&hotel.Description,
+			&hotel.StarStandard)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error scanning rows %v\n", err)
 		}
