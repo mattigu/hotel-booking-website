@@ -50,7 +50,6 @@ const testGet = async () => getMessage.value = await testBackendGet()
   <h1>Router testing below</h1>
   <nav>
     <li><RouterLink to="/">Go to Home</RouterLink></li>
-    <li><RouterLink to="/hotel/123">Go to hotel with id=123</RouterLink></li>
   </nav>
   <main>
     <RouterView />

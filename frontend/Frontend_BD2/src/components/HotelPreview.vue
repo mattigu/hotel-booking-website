@@ -10,18 +10,12 @@ defineProps({
 	}
 })
 
-function test() {
-	console.log("something")
-	return
-}
-
-let text = async () => {text.value = await test();}
 
 </script>
 <template>
   <div class="hotel">
     <h1> {{ name }} HOTEL ID: {{ id }} </h1>
-    <button @click="text()">aaaa</button>
+    <li><RouterLink :to="`hotel/${ id }`">Check availability</RouterLink></li>
   </div>
 </template>
 

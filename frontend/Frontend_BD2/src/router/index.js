@@ -1,6 +1,6 @@
 import { createWebHistory, createRouter } from 'vue-router'
 
-import HotelBrowse from '@/views/HotelBrowse.vue'
+import HotelBrowse from '@/views/HotelBrowseView.vue'
 import HotelView from '@/views/HotelView.vue'
 
 const routes = [

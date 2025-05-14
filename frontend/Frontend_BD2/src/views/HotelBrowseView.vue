@@ -2,16 +2,6 @@
 import { ref } from 'vue'
 import HotelPreview from '@/components/HotelPreview.vue';
 
-defineProps({
-	name: {
-		type: String,
-		required: true
-	},
-	id: {
-		type: Number,
-		required: true
-	}
-})
 // hotels/getall
 async function getHotels() {
 	const request = new Request("http://localhost:3000/hotels/getall", {
