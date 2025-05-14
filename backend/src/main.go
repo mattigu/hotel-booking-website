@@ -49,6 +49,7 @@ func main() {
 	hotelHandler := hotel.NewHotelHandler(db)
 
 	http.HandleFunc("GET /hotels/getall", CORS(errorHandler(hotelHandler.GetAll)))
+	http.HandleFunc("GET /hotels/getbyid", CORS(errorHandler(hotelHandler.GetById)))
 
 	http.ListenAndServe(":3000", nil)
 	db.Close()
