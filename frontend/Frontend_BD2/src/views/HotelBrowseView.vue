@@ -29,7 +29,10 @@ loadHotels();
 
 <template>
   <button @click="loadHotels() "> Find hotels </button>
-  <template v-for="hotel in allHotels">
+  <template
+    v-for="hotel in allHotels"
+    :key="hotel.id"
+  >
     <HotelPreview
       :name="hotel.name"
       :id="hotel.id"
