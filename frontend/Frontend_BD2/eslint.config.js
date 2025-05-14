@@ -18,7 +18,8 @@ export default defineConfig([
 
 			"vue/html-indent": ["error", 2],
 			"vue/script-indent": ["error", "tab"],
-			"vue/singleline-html-element-content-newline": "off"
+			"vue/singleline-html-element-content-newline": "off",
+			"vue/html-closing-bracket-newline" : "off"
 		}
 	},
 
