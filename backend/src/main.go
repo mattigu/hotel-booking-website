@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"encoding/json"
+	//"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
@@ -11,13 +11,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-type testStruct struct {
-	Id   int64  `json:"id"`
-	Name string `json:"name"`
-}
-
 func CORS(next http.HandlerFunc) http.HandlerFunc {
-	println("here")
 	return func(w http.ResponseWriter, r *http.Request) {
 	  w.Header().Add("Access-Control-Allow-Origin", "*")
 	  w.Header().Add("Access-Control-Allow-Credentials", "true")
@@ -33,61 +27,33 @@ func CORS(next http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
-// Temporary CORS setup for frontend test
-func enableCors(w *http.ResponseWriter) {
-	(*w).Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
-}
+func processQuery(query string){
 
-func getTest(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "GET Hello world\n")
-}
-
-func postTest(w http.ResponseWriter, r *http.Request) {
-	var t testStruct
-	err := json.NewDecoder(r.Body).Decode(&t)
-	_ = err
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-	fmt.Fprintf(w, "Received\n")
-	fmt.Println("Message received ", t)
 }
 
 func main() {
+	// loading environmental variables
 	godotenv.Load(".env")
-	conn, err := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
+
+	// connecting to database, which URL is in .env file
+	conn, err = pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)
 	}
 	defer conn.Close(context.Background())
-
 	println("connected to database")
 	
 	// Test for seed data in db
-	rows, err := conn.Query(context.Background(), "select id, name from teststruct")
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Can't retrieve rows from db %v\n", err)
-		os.Exit(1)
-	}
-	defer rows.Close()
-	var tests []testStruct
-	for rows.Next() {
-		var test testStruct
-		err := rows.Scan(
-			&test.Id,
-			&test.Name,
-		)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error scanning rows %v\n", err)
-		}
-		tests = append(tests, test)
-	}
+	tests := getTests();
+
 	fmt.Printf("len=%d cap=%d %v\n", len(tests), cap(tests), tests)
 
+	// setup endpoints
 	http.HandleFunc("GET /test/getTest", CORS(getTest))
+	http.HandleFunc("GET /hotels", CORS(getHotel))
 	http.HandleFunc("POST /test/postTest", CORS(postTest))
 
+	// listen on port 3000
 	http.ListenAndServe(":3000", nil)
 }
