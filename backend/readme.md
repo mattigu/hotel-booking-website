@@ -1,10 +1,43 @@
 # Backend Queries
 1. GET: /get/hotels?city=[city_name]&startdate=[yyyy-mm-dd]&enddate=[yyyy-mm-dd]&guests=[number]
 
+(chwilowo sprawdza tylko miasto, bez innych danych)
+
+przykładowe zpaytanie:
+
+`localhost:3000/get/hotels?city=Warszawa&startdate=2025-05-24&enddate=2025-05-24&guests=3`
+
+zwraca:
+
+```json
+[
+    {
+        "id":1,
+        "name":"Hotel Royal",
+        "description":"Luksusowy hotel w centrum Warszawy.",
+        "star_standard":5
+    }
+]
+```
+------------------
 2. GET: /get/hotel/[id]
 
+przykładowe zapytanie:
+
+`localhost:3000/get/hotel/1`
+
+zwraca:
+```json
+{
+    "id":1,
+    "name":"Hotel Royal",
+    "adress_id":1,
+    "description":"Luksusowy hotel w centrum Warszawy.",
+    "star_standard":5
+}
+```
+-------------------
 3. POST: /reserve/room  
-in data: [room_id], [customer_id], [start_date], [end_date], [payment_id]
 
 przykładowe dane w zapytaniu:
 ```json
@@ -18,5 +51,7 @@ przykładowe dane w zapytaniu:
 }
 ```
 
+----------------------
+(jeszcze niezaimplementowane)
 4. POST: /post/opinion
 in data: [hotel_id], [username], [star_rating], ["content"]
