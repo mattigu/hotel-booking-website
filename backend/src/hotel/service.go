@@ -4,19 +4,23 @@ import (
 	"bd2_projekt/database"
 )
 
-type hotelService struct {
-	r *hotelRepository
+type HotelService struct {
+	repository *HotelRepository
 }
 
-func newHotelService(db *database.Database) *hotelService {
-	r := &hotelRepository{db: db}
-	return &hotelService{r: r}
+func newHotelService(db *database.Database) *HotelService {
+	hotelRepository := &HotelRepository{db: db}
+	return &HotelService{repository: hotelRepository}
 }
 
-func (s *hotelService) getAll() ([]Hotel, error) {
-	return s.r.getAll()
+func (hotelService *HotelService) getAll() ([]Hotel, error) {
+	return hotelService.repository.getAll()
 }
 
-func (s *hotelService) getById(id int64) (Hotel, error) {
-	return s.r.getById(id)
+func (hotelService *HotelService) getById(id int64) (Hotel, error) {
+	return hotelService.repository.getById(id)
+}
+
+func (hotelService *HotelService) getHotelsByCity(city string) ([]HotelOverview, error) {
+	return hotelService.repository.getHotelsByCity(city)
 }

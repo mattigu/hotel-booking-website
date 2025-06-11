@@ -10,33 +10,42 @@ import (
 )
 
 type HotelHandler struct {
-	s *hotelService
+	service *HotelService
 }
 
 func NewHotelHandler(db *database.Database) *HotelHandler {
-	s := newHotelService(db)
-	return &HotelHandler{s: s}
+	hotelService := newHotelService(db)
+	return &HotelHandler{service: hotelService}
 }
 
-func (h *HotelHandler) GetAll(w http.ResponseWriter, r *http.Request) error {
-	hotels, err := h.s.getAll()
+func (hotelHandler *HotelHandler) GetAll(responseWriter http.ResponseWriter, req *http.Request) error {
+	hotels, err := hotelHandler.service.getAll()
 	if err != nil {
 		return app_err.WithHTTPStatus(err, http.StatusBadRequest)
 	}
 	// w.WriteHeader(http.Status...) Change status code here if needed
-	return json.NewEncoder(w).Encode(hotels)
+	return json.NewEncoder(responseWriter).Encode(hotels)
 }
 
-func (h *HotelHandler) GetById(w http.ResponseWriter, r *http.Request) error {
-	id := r.URL.Query().Get("id")
+func (hotelHandler *HotelHandler) GetById(responseWriter http.ResponseWriter, req *http.Request) error {
+	id := req.URL.Query().Get("id")
 	i, err := strconv.Atoi(id)
 	if err != nil {
 		return app_err.WithHTTPStatus(err, http.StatusBadRequest)
 	}
-	hotels, err := h.s.getById(int64(i))
+	hotels, err := hotelHandler.service.getById(int64(i))
 	if err != nil {
 		return app_err.WithHTTPStatus(err, http.StatusBadRequest)
 	}
 	// w.WriteHeader(http.Status...) Change status code here if needed
-	return json.NewEncoder(w).Encode(hotels)
+	return json.NewEncoder(responseWriter).Encode(hotels)
+}
+
+func (hotelHandler *HotelHandler) GetHotelsByCity(responseWriter http.ResponseWriter, req *http.Request) error {
+	hotels, err := hotelHandler.service.getHotelsByCity(req.URL.Query().Get("city"))
+	if err != nil {
+		return app_err.WithHTTPStatus(err, http.StatusBadRequest)
+	}
+	// w.WriteHeader(http.Status...) Change status code here if needed
+	return json.NewEncoder(responseWriter).Encode(hotels)
 }
