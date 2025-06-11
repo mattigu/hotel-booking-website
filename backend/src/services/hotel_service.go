@@ -1,0 +1,28 @@
+package services
+
+import (
+	"bd2_projekt/database"
+	"bd2_projekt/repositories"
+	"bd2_projekt/schemas"
+)
+
+type HotelService struct {
+	repository *repositories.HotelRepository
+}
+
+func NewHotelService(db *database.Database) *HotelService {
+	hotelRepository := &repositories.HotelRepository{Db: db}
+	return &HotelService{repository: hotelRepository}
+}
+
+func (hotelService *HotelService) GetAll() ([]schemas.Hotel, error) {
+	return hotelService.repository.GetAll()
+}
+
+func (hotelService *HotelService) GetById(id int64) (schemas.Hotel, error) {
+	return hotelService.repository.GetById(id)
+}
+
+func (hotelService *HotelService) GetHotelsByCity(city string) ([]schemas.HotelOverview, error) {
+	return hotelService.repository.GetHotelsByCity(city)
+}

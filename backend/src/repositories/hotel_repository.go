@@ -1,7 +1,8 @@
-package hotel
+package repositories
 
 import (
 	"bd2_projekt/database"
+	"bd2_projekt/schemas"
 	"context"
 	"fmt"
 	"os"
@@ -10,19 +11,19 @@ import (
 )
 
 type HotelRepository struct {
-	db *database.Database
+	Db *database.Database
 }
 
-func (hotelRepository *HotelRepository) getAll() ([]Hotel, error) {
+func (hotelRepository *HotelRepository) GetAll() ([]schemas.Hotel, error) {
 	query := "select id, name, address_id, description, star_standard from hotels"
-	rows, err := hotelRepository.db.Pool().Query(context.Background(), query)
+	rows, err := hotelRepository.Db.Pool().Query(context.Background(), query)
 	if err != nil {
 		return nil, fmt.Errorf("unable to query hotels: %w", err)
 	}
 	defer rows.Close()
-	hotels := []Hotel{}
+	hotels := []schemas.Hotel{}
 	for rows.Next() {
-		hotel := Hotel{}
+		hotel := schemas.Hotel{}
 		err := rows.Scan(
 			&hotel.Id,
 			&hotel.Name,
@@ -37,13 +38,13 @@ func (hotelRepository *HotelRepository) getAll() ([]Hotel, error) {
 	return hotels, nil
 }
 
-func (hotelRepository *HotelRepository) getById(id int64) (Hotel, error) {
+func (hotelRepository *HotelRepository) GetById(id int64) (schemas.Hotel, error) {
 	query := "select id, name, address_id, description, star_standard from hotels where id=@id"
 	args := pgx.NamedArgs{
 		"id": id,
 	}
-	hotel := Hotel{}
-	err := hotelRepository.db.Pool().QueryRow(context.Background(), query, args).Scan(
+	hotel := schemas.Hotel{}
+	err := hotelRepository.Db.Pool().QueryRow(context.Background(), query, args).Scan(
 		&hotel.Id,
 		&hotel.Name,
 		&hotel.AddressId,
@@ -51,12 +52,12 @@ func (hotelRepository *HotelRepository) getById(id int64) (Hotel, error) {
 		&hotel.StarStandard)
 
 	if err != nil {
-		return Hotel{}, fmt.Errorf("unable to query hotels: %w", err)
+		return schemas.Hotel{}, fmt.Errorf("unable to query hotels: %w", err)
 	}
 	return hotel, nil
 }
 
-func (hotelRepository *HotelRepository) getHotelsByCity(city string) ([]HotelOverview, error){
+func (hotelRepository *HotelRepository) GetHotelsByCity(city string) ([]schemas.HotelOverview, error){
 	query := `select h.id, h.name, h.description, h.star_standard 
 		from hotels h 
 		inner join addresses a on a.id=h.address_id 
@@ -65,15 +66,15 @@ func (hotelRepository *HotelRepository) getHotelsByCity(city string) ([]HotelOve
 	args := pgx.NamedArgs{
 		"city": city,
 	}
-	rows, err := hotelRepository.db.Pool().Query(context.Background(), query, args)
+	rows, err := hotelRepository.Db.Pool().Query(context.Background(), query, args)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Can't retrieve rows from db %v\n", err)
 		os.Exit(1)
 	}
 	defer rows.Close()
-	var hotels []HotelOverview
+	var hotels []schemas.HotelOverview
 	for rows.Next() {
-		var hotel HotelOverview
+		var hotel schemas.HotelOverview
 		err := rows.Scan(
 			&hotel.Id,
 			&hotel.Name,
@@ -86,4 +87,9 @@ func (hotelRepository *HotelRepository) getHotelsByCity(city string) ([]HotelOve
 		hotels = append(hotels, hotel)
 	}
 	return hotels, nil
+}
+
+func (hotelRepository *HotelRepository) getReservedHotelsId(city string, startDate string, endDate string, ) ([]schemas.HotelInfo, error){
+	//query := "SELECT id FROM hotels "
+	return nil, nil
 }

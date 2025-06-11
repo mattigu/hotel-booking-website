@@ -1,4 +1,4 @@
-package hotel
+package schemas
 
 type Hotel struct {
 	Id           int64  `json:"id"`
@@ -24,5 +24,8 @@ type HotelInfo struct {
 	Id   int64  `json:"id"`
 	Name string `json:"name"`
 	Desc string `json:"description"`
+	Price string `json:"price"`
 	Star int64 `json:"star_standard"`
+	SingleBeds int32 `json:"sigle_beds"`
+	DoubleBeds int32 `json:"double_beds"`
 }

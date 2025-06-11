@@ -1,8 +1,9 @@
-package hotel
+package handlers
 
 import (
 	"bd2_projekt/app_err"
 	"bd2_projekt/database"
+	"bd2_projekt/services"
 	"encoding/json"
 	"strconv"
 
@@ -10,16 +11,16 @@ import (
 )
 
 type HotelHandler struct {
-	service *HotelService
+	service *services.HotelService
 }
 
 func NewHotelHandler(db *database.Database) *HotelHandler {
-	hotelService := newHotelService(db)
+	hotelService := services.NewHotelService(db)
 	return &HotelHandler{service: hotelService}
 }
 
 func (hotelHandler *HotelHandler) GetAll(responseWriter http.ResponseWriter, req *http.Request) error {
-	hotels, err := hotelHandler.service.getAll()
+	hotels, err := hotelHandler.service.GetAll()
 	if err != nil {
 		return app_err.WithHTTPStatus(err, http.StatusBadRequest)
 	}
@@ -28,12 +29,12 @@ func (hotelHandler *HotelHandler) GetAll(responseWriter http.ResponseWriter, req
 }
 
 func (hotelHandler *HotelHandler) GetById(responseWriter http.ResponseWriter, req *http.Request) error {
-	id := req.URL.Query().Get("id")
+	id := req.PathValue("id")
 	i, err := strconv.Atoi(id)
 	if err != nil {
 		return app_err.WithHTTPStatus(err, http.StatusBadRequest)
 	}
-	hotels, err := hotelHandler.service.getById(int64(i))
+	hotels, err := hotelHandler.service.GetById(int64(i))
 	if err != nil {
 		return app_err.WithHTTPStatus(err, http.StatusBadRequest)
 	}
@@ -42,7 +43,7 @@ func (hotelHandler *HotelHandler) GetById(responseWriter http.ResponseWriter, re
 }
 
 func (hotelHandler *HotelHandler) GetHotelsByCity(responseWriter http.ResponseWriter, req *http.Request) error {
-	hotels, err := hotelHandler.service.getHotelsByCity(req.URL.Query().Get("city"))
+	hotels, err := hotelHandler.service.GetHotelsByCity(req.URL.Query().Get("city"))
 	if err != nil {
 		return app_err.WithHTTPStatus(err, http.StatusBadRequest)
 	}

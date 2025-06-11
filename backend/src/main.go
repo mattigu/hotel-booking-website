@@ -3,7 +3,7 @@ package main
 import (
 //	"bd2_projekt/app_err"
 //	"bd2_projekt/database"
-	"bd2_projekt/hotel"
+	"bd2_projekt/handlers"
 //	"context"
 //	"encoding/json"
 //	"fmt"
@@ -23,14 +23,16 @@ func main() {
 	println("connected to database")
 	
 	// creating the hotel handler
-	hotelHandler := hotel.NewHotelHandler(db)
+	hotelHandler := handlers.NewHotelHandler(db)
 
 	// create all endpoints
-	http.HandleFunc("GET /hotels", CORS(errorHandler(hotelHandler.GetHotelsByCity)))
+	http.HandleFunc("GET /get/hotels", CORS(errorHandler(hotelHandler.GetHotelsByCity)))
+	http.HandleFunc("GET /get/hotel/{id}", CORS(errorHandler(hotelHandler.GetById)))
 	http.HandleFunc("GET /hotels/getall", CORS(errorHandler(hotelHandler.GetAll)))
-	http.HandleFunc("GET /hotels/getbyid", CORS(errorHandler(hotelHandler.GetById)))
 
 	// listen on port 3000
 	http.ListenAndServe(":3000", nil)
+
+	// close the database connection
 	db.Close()
 }
