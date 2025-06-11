@@ -22,13 +22,17 @@ func main() {
 	db := connectToDatabase();
 	println("connected to database")
 	
-	// creating the hotel handler
+	// creating all the handlers
 	hotelHandler := handlers.NewHotelHandler(db)
+	reservationHandler := handlers.NewReservationHandler(db)
 
-	// create all endpoints
+	// create all get endpoints
 	http.HandleFunc("GET /get/hotels", CORS(errorHandler(hotelHandler.GetHotelsByCity)))
 	http.HandleFunc("GET /get/hotel/{id}", CORS(errorHandler(hotelHandler.GetById)))
 	http.HandleFunc("GET /hotels/getall", CORS(errorHandler(hotelHandler.GetAll)))
+
+	// create all post endpoints
+	http.HandleFunc("POST /reserve/room", CORS(errorHandler(reservationHandler.ReserveRoom)))
 
 	// listen on port 3000
 	http.ListenAndServe(":3000", nil)
