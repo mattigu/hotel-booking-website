@@ -1,5 +1,7 @@
 <script setup>
 import { ref, inject } from 'vue'
+import ReviewForm from '@/components/ReviewForm.vue'
+import ReviewBox from '@/components/ReviewBox.vue'
 
 const API_URL = inject('API_URL')
 // View that displays a detailed Hotel page.
@@ -56,6 +58,19 @@ loadHotel(props.id)
         <p>- {{ amenity.description }}</p>
       </template>
     </div>
+  </div>
+
+  <ReviewForm />
+
+  <div class="reviews" v-if="hotel">
+    <template
+      v-for="review in hotel.reviews"
+      :key="review.username"
+    >
+      <!-- Use a better key for this loop later -->
+
+      <ReviewBox :review="review" />
+    </template>
   </div>
 </template>
 
