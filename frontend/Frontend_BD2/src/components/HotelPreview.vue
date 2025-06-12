@@ -1,21 +1,20 @@
 <script setup>
-defineProps({
+const props = defineProps({
 	name: {
 		type: String,
 		required: true
 	},
 	id: {
-		type: String,
+		type: Number,
 		required: true
 	}
 })
 
-
 </script>
 <template>
   <div class="hotel">
-    <h1> {{ name }} HOTEL ID: {{ id }} </h1>
-    <li><RouterLink :id="id" :to="`hotel/${ id }`">Check availability</RouterLink></li>
+    <h1> {{ props.name }} HOTEL ID: {{ props.id }} </h1>
+    <RouterLink :id="id" :to="`hotel/${ id }`">Check availability</RouterLink>
   </div>
 </template>
 

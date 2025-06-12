@@ -1,36 +1,22 @@
 <script setup>
 import { ref } from 'vue'
 import HotelPreview from '@/components/HotelPreview.vue';
+import SearchBar from '@/components/SearchBar.vue';
 
-// hotels/getall
-async function getHotels() {
-	const request = new Request("http://localhost:3000/hotels/getall", {
-		method: "GET",
-	});
 
-	try {
-		const response = await fetch(request)
-		if (!response.ok) {
-			throw new Error(`Failed to get response`);}
-		let hotels = await response.json();
-		return hotels
-	} catch (error) {
-		console.error(error.message);
-		alert("Failed")
-		return;
-	}
+const hotelList = ref([])
+
+function handleSearch(hotels) {
+	hotelList.value = hotels
 }
-
-let allHotels = ref([]);
-const loadHotels = async () => {allHotels.value = await getHotels();}
-loadHotels();
 
 </script>
 
 <template>
-  <button @click="loadHotels() "> Find hotels </button>
+  <SearchBar @search_complete="handleSearch" />
+
   <template
-    v-for="hotel in allHotels"
+    v-for="hotel in hotelList"
     :key="hotel.id"
   >
     <HotelPreview

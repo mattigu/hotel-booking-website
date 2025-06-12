@@ -1,6 +1,7 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
 
+const API_URL = inject('API_URL')
 // View that displays a detailed Hotel page.
 
 const props = defineProps({
@@ -10,8 +11,9 @@ const props = defineProps({
 	}
 })
 
-async function getHotel(id) {
-	const request = new Request(`http://localhost:3000/hotels/getbyid/${ id }`, {
+async function fetchHotel(id) {
+	const url = API_URL + `/get/hotel/${ id }`
+	const request = new Request(url, {
 		method: "GET",
 	});
 
@@ -19,7 +21,7 @@ async function getHotel(id) {
 		const response = await fetch(request)
 		if (!response.ok) {
 			throw new Error(`Failed to get response`);}
-		let hotel = await response.json();
+		const hotel = await response.json();
 		return hotel
 	} catch (error) {
 		console.error(error.message);
@@ -29,7 +31,7 @@ async function getHotel(id) {
 }
 
 const hotel = ref(null)
-const loadHotel = async (id) => {hotel.value = await getHotel(id);}
+const loadHotel = async (id) => {hotel.value = await fetchHotel(id)}
 loadHotel(props.id)
 
 </script>
