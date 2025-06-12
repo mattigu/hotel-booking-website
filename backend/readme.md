@@ -57,6 +57,17 @@ przykładowe dane w zapytaniu:
 ```
 
 ----------------------
-(jeszcze niezaimplementowane)
+
 4. POST: /post/opinion
 in data: [hotel_id], [username], [star_rating], ["content"]
+
+przykładowe dane w zapytaniu:
+
+```json
+{
+    "hotel_id": 1,
+    "username": "user1",
+    "review_text": "super hotel polecam gorąco.",
+    "rating": 4
+}
+```

@@ -47,13 +47,17 @@ func (hotelHandler *HotelHandler) GetHotelsSearchQuery(responseWriter http.Respo
 	var searchQuery schemas.HotelSearchQueryDetails;
 	var err error;
 
+	// getting data from the URL
 	searchQuery.City = req.URL.Query().Get("city")
 	searchQuery.StartDate = req.URL.Query().Get("startdate")
 	searchQuery.EndDate = req.URL.Query().Get("enddate")
 	searchQuery.Guests, err = strconv.Atoi(req.URL.Query().Get("guests"))
 
+	// geting data for the URL parameters
 	hotels, err := hotelHandler.service.GetHotelsSearchQuery(&searchQuery)
-	if err != nil { return app_err.WithHTTPStatus(err, http.StatusBadRequest) }
+	if err != nil { 
+		return app_err.WithHTTPStatus(err, http.StatusBadRequest) 
+	}
 	
 	// w.WriteHeader(http.Status...) Change status code here if needed
 	return json.NewEncoder(responseWriter).Encode(hotels)

@@ -25,6 +25,7 @@ func main() {
 	// creating all the handlers
 	hotelHandler := handlers.NewHotelHandler(db)
 	reservationHandler := handlers.NewReservationHandler(db)
+	reviewHandler := handlers.NewReviewHandler(db)
 
 	// create all get endpoints
 	http.HandleFunc("GET /get/hotels", CORS(errorHandler(hotelHandler.GetHotelsSearchQuery)))
@@ -33,6 +34,7 @@ func main() {
 
 	// create all post endpoints
 	http.HandleFunc("POST /reserve/room", CORS(errorHandler(reservationHandler.ReserveRoom)))
+	http.HandleFunc("POST /new/review", CORS(errorHandler(reviewHandler.PostReview)))
 
 	// listen on port 3000
 	http.ListenAndServe(":3000", nil)
