@@ -57,14 +57,16 @@ func (hotelRepository *HotelRepository) GetById(id int64) (schemas.Hotel, error)
 	return hotel, nil
 }
 
-func (hotelRepository *HotelRepository) GetHotelsByCity(city string) ([]schemas.HotelOverview, error){
-	query := `select h.id, h.name, h.description, h.star_standard 
-		from hotels h 
-		inner join addresses a on a.id=h.address_id 
-		where a.city like @city;`
+func (hotelRepository *HotelRepository) GetHotelsSearchQuery(searchQuery *schemas.HotelSearchQueryDetails) ([]schemas.HotelInfo, error){
+	query := `SELECT h.id, h.name, h.star_standard, r.single_bed_num, r.double_bed_num
+		FROM hotels h 
+			INNER JOIN addresses a on a.id=h.address_id
+			INNER JOIN rooms r on r.hotel_id=h.id
+		WHERE a.city like @city AND r.single_bed_num + r.double_bed_num * 2 = @guests;`
 	
 	args := pgx.NamedArgs{
-		"city": city,
+		"city": searchQuery.City,
+		"guests": searchQuery.Guests,
 	}
 	rows, err := hotelRepository.Db.Pool().Query(context.Background(), query, args)
 	if err != nil {
@@ -72,15 +74,18 @@ func (hotelRepository *HotelRepository) GetHotelsByCity(city string) ([]schemas.
 		os.Exit(1)
 	}
 	defer rows.Close()
-	var hotels []schemas.HotelOverview
+	var hotels []schemas.HotelInfo
 	for rows.Next() {
-		var hotel schemas.HotelOverview
+		var hotel schemas.HotelInfo
 		err := rows.Scan(
 			&hotel.Id,
 			&hotel.Name,
-			&hotel.Desc,
 			&hotel.Star,
+			&hotel.SingleBeds,
+			&hotel.DoubleBeds,
 		)
+		hotel.Price = "100.99";
+		hotel.PhotoUrl = "https://content.r9cdn.net/rimg/kimg/4a/83/41fc6b329baa5c28.jpg?width=1200&height=630&crop=true";
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error scanning rows %v\n", err)
 		}

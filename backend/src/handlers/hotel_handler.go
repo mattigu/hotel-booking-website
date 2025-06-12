@@ -3,6 +3,7 @@ package handlers
 import (
 	"bd2_projekt/app_err"
 	"bd2_projekt/database"
+	"bd2_projekt/schemas"
 	"bd2_projekt/services"
 	"encoding/json"
 	"strconv"
@@ -42,11 +43,18 @@ func (hotelHandler *HotelHandler) GetById(responseWriter http.ResponseWriter, re
 	return json.NewEncoder(responseWriter).Encode(hotels)
 }
 
-func (hotelHandler *HotelHandler) GetHotelsByCity(responseWriter http.ResponseWriter, req *http.Request) error {
-	hotels, err := hotelHandler.service.GetHotelsByCity(req.URL.Query().Get("city"))
-	if err != nil {
-		return app_err.WithHTTPStatus(err, http.StatusBadRequest)
-	}
+func (hotelHandler *HotelHandler) GetHotelsSearchQuery(responseWriter http.ResponseWriter, req *http.Request) error {
+	var searchQuery schemas.HotelSearchQueryDetails;
+	var err error;
+
+	searchQuery.City = req.URL.Query().Get("city")
+	searchQuery.StartDate = req.URL.Query().Get("startdate")
+	searchQuery.EndDate = req.URL.Query().Get("enddate")
+	searchQuery.Guests, err = strconv.Atoi(req.URL.Query().Get("guests"))
+
+	hotels, err := hotelHandler.service.GetHotelsSearchQuery(&searchQuery)
+	if err != nil { return app_err.WithHTTPStatus(err, http.StatusBadRequest) }
+	
 	// w.WriteHeader(http.Status...) Change status code here if needed
 	return json.NewEncoder(responseWriter).Encode(hotels)
 }

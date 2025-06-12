@@ -21,11 +21,18 @@ type HotelOverview struct {
 }
 
 type HotelInfo struct {
-	Id   int64  `json:"id"`
-	Name string `json:"name"`
-	Desc string `json:"description"`
-	Price string `json:"price"`
-	Star int64 `json:"star_standard"`
-	SingleBeds int32 `json:"sigle_beds"`
-	DoubleBeds int32 `json:"double_beds"`
+	Id   		int64  	`json:"id"`
+	Name 		string 	`json:"name"`
+	Price 		string 	`json:"price"`
+	Star 		int64 	`json:"star_standard"`
+	SingleBeds 	int32 	`json:"sigle_beds"`
+	DoubleBeds 	int32 	`json:"double_beds"`
+	PhotoUrl	string	`json:"photo_url"`
+}
+
+type HotelSearchQueryDetails struct {
+	City		string
+	StartDate	string
+	EndDate		string
+	Guests		int
 }

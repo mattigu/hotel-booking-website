@@ -23,6 +23,6 @@ func (hotelService *HotelService) GetById(id int64) (schemas.Hotel, error) {
 	return hotelService.repository.GetById(id)
 }
 
-func (hotelService *HotelService) GetHotelsByCity(city string) ([]schemas.HotelOverview, error) {
-	return hotelService.repository.GetHotelsByCity(city)
+func (hotelService *HotelService) GetHotelsSearchQuery(searchQuery *schemas.HotelSearchQueryDetails) ([]schemas.HotelInfo, error) {
+	return hotelService.repository.GetHotelsSearchQuery(searchQuery)
 }

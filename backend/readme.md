@@ -1,7 +1,9 @@
 # Backend Queries
+
+
 1. GET: /get/hotels?city=[city_name]&startdate=[yyyy-mm-dd]&enddate=[yyyy-mm-dd]&guests=[number]
 
-(chwilowo sprawdza tylko miasto, bez innych danych)
+(chwilowo sprawdza tylko miasto, i ilość gości bez innych danych)
 
 przykładowe zpaytanie:
 
@@ -14,8 +16,11 @@ zwraca:
     {
         "id":1,
         "name":"Hotel Royal",
-        "description":"Luksusowy hotel w centrum Warszawy.",
-        "star_standard":5
+        "price":"100.99",
+        "star_standard":5,
+        "sigle_beds":1,
+        "double_beds":1,
+        "photo_url":"https://photo_site.net/photo.jpg"
     }
 ]
 ```

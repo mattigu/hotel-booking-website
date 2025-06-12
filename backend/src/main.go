@@ -27,7 +27,7 @@ func main() {
 	reservationHandler := handlers.NewReservationHandler(db)
 
 	// create all get endpoints
-	http.HandleFunc("GET /get/hotels", CORS(errorHandler(hotelHandler.GetHotelsByCity)))
+	http.HandleFunc("GET /get/hotels", CORS(errorHandler(hotelHandler.GetHotelsSearchQuery)))
 	http.HandleFunc("GET /get/hotel/{id}", CORS(errorHandler(hotelHandler.GetById)))
 	http.HandleFunc("GET /hotels/getall", CORS(errorHandler(hotelHandler.GetAll)))
 
