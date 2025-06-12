@@ -15,7 +15,7 @@ defineProps({
 <template>
   <div class="hotel">
     <h1> {{ name }} HOTEL ID: {{ id }} </h1>
-    <li><RouterLink :to="`hotel/${ id }`">Check availability</RouterLink></li>
+    <li><RouterLink :id="id" :to="`hotel/${ id }`">Check availability</RouterLink></li>
   </div>
 </template>
 
