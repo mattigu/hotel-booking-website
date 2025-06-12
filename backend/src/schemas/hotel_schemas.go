@@ -26,6 +26,8 @@ type HotelSearchQueryDetails struct {
 }
 
 type HotelSpecificData struct {
+	Id   			int  		`json:"id"`
+	Name 			string 		`json:"name"`
 	PhotoUrl		string		`json:"photo_url"`
 	Description  	string 		`json:"description"`
 	Address 		AddressData	`json:"address"`
