@@ -34,6 +34,8 @@ przykładowe zapytanie:
 zwraca:
 ```json
 {
+    "id":1,
+    "name":"Hotel Royal",
     "photo_url":"https://photo_site.net/photo.jpg",
     "description":"Luksusowy hotel w centrum Warszawy.",
     "address":
