@@ -1,7 +1,7 @@
 # Backend Queries
 
 
-1. GET: /get/hotels?city=[city_name]&startdate=[yyyy-mm-dd]&enddate=[yyyy-mm-dd]&guests=[number]
+### 1. GET: /get/hotels?city=[city_name]&startdate=[yyyy-mm-dd]&enddate=[yyyy-mm-dd]&guests=[number]
 
 (chwilowo sprawdza tylko miasto, i ilość gości bez innych danych)
 
@@ -25,7 +25,7 @@ zwraca:
 ]
 ```
 ------------------
-2. GET: /get/hotel/[id]
+### 2. GET: /get/hotel/[id]
 
 przykładowe zapytanie:
 
@@ -34,15 +34,41 @@ przykładowe zapytanie:
 zwraca:
 ```json
 {
-    "id":1,
-    "name":"Hotel Royal",
-    "adress_id":1,
+    "photo_url":"https://photo_site.net/photo.jpg",
     "description":"Luksusowy hotel w centrum Warszawy.",
-    "star_standard":5
+    "address":
+    {
+        "city":"Warszawa",
+        "street":"Marszałkowska",
+        "house_number":"10",
+        "country":"Polska"
+    },
+    "amenities":
+    [
+        {
+            "id":1,
+            "name":"Basen",
+            "description":"Basen dostępny dla gości."
+        },
+        {
+            "id":2,
+            "name":"Siłownia",
+            "description":"W pełni wyposażona siłownia."
+        }
+    ],
+    "reviews":
+    [
+        {
+            "username":"jan_kowalski",
+            "review_text":"Niesamowite doświadczenie!",
+            "rating":5
+        }
+    ]
 }
+
 ```
 -------------------
-3. POST: /reserve/room  
+### 3. POST: /reserve/room  
 
 przykładowe dane w zapytaniu:
 ```json
@@ -58,7 +84,7 @@ przykładowe dane w zapytaniu:
 
 ----------------------
 
-4. POST: /post/opinion
+### 4. POST: /post/opinion
 in data: [hotel_id], [username], [star_rating], ["content"]
 
 przykładowe dane w zapytaniu:

@@ -38,21 +38,120 @@ func (hotelRepository *HotelRepository) GetAll() ([]schemas.Hotel, error) {
 	return hotels, nil
 }
 
-func (hotelRepository *HotelRepository) GetById(id int64) (schemas.Hotel, error) {
-	query := "select id, name, address_id, description, star_standard from hotels where id=@id"
+func (repository *HotelRepository) getAmenitiesFor(id int) []schemas.Amenities{
+	query := `SELECT a.id, a.name, a.description 
+	FROM hotel_amenity_types a INNER JOIN hotel_amenities ha on ha.hotel_amenity_type=a.id
+	WHERE ha.hotel_id=@id`
+
 	args := pgx.NamedArgs{
 		"id": id,
 	}
-	hotel := schemas.Hotel{}
+
+	rows, err := repository.Db.Pool().Query(context.Background(), query, args)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Can't retrieve rows from db %v\n", err)
+		os.Exit(1)
+	}
+	defer rows.Close()
+	var amenities []schemas.Amenities
+	for rows.Next() {
+		var amenity schemas.Amenities
+		err := rows.Scan(
+			&amenity.Id,
+			&amenity.Name,
+			&amenity.Description,
+		)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error scanning rows %v\n", err)
+		}
+		amenities = append(amenities, amenity)
+	}
+	return amenities
+}
+
+func (repository *HotelRepository) getSomeReviewsFor(id int) []schemas.ReviewData{
+	query := `SELECT username, rating, review_text 
+	FROM reviews
+	WHERE hotel_id=@id
+	fetch first 10 rows only`
+
+	args := pgx.NamedArgs{
+		"id": id,
+	}
+
+	rows, err := repository.Db.Pool().Query(context.Background(), query, args)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Can't retrieve rows from db %v\n", err)
+		os.Exit(1)
+	}
+	defer rows.Close()
+	var reviews []schemas.ReviewData
+	for rows.Next() {
+		var review schemas.ReviewData
+		err := rows.Scan(
+			&review.Username,
+			&review.Rating,
+			&review.ReviewText,
+		)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error scanning rows %v\n", err)
+		}
+		reviews = append(reviews, review)
+	}
+	return reviews
+}
+
+func (repository *HotelRepository) getAddressFor(id int) schemas.AddressData{
+	query := `SELECT d.city, d.street, d.house_number, c.name
+	FROM hotels h 
+		INNER JOIN addresses d on h.address_id=d.id
+		INNER JOIN countries c on d.country_id=c.id
+	WHERE h.id=@id`
+
+	args := pgx.NamedArgs{
+		"id": id,
+	}
+
+	rows, err := repository.Db.Pool().Query(context.Background(), query, args)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Can't retrieve rows from db %v\n", err)
+		os.Exit(1)
+	}
+	defer rows.Close()
+	var address schemas.AddressData
+	for rows.Next() {
+		err := rows.Scan(
+			&address.City,
+			&address.Street,
+			&address.HouseNumber,
+			&address.Country,
+		)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error scanning rows %v\n", err)
+		}
+	}
+	return address
+}
+
+func (hotelRepository *HotelRepository) GetById(id int) (schemas.HotelSpecificData, error) {
+	query := `select h.description 
+	from hotels h inner join addresses d on h.address_id=d.id
+	where h.id=@id`
+
+	args := pgx.NamedArgs{
+		"id": id,
+	}
+	hotel := schemas.HotelSpecificData{}
 	err := hotelRepository.Db.Pool().QueryRow(context.Background(), query, args).Scan(
-		&hotel.Id,
-		&hotel.Name,
-		&hotel.AddressId,
 		&hotel.Description,
-		&hotel.StarStandard)
+		)
+	hotel.PhotoUrl = "https://content.r9cdn.net/rimg/kimg/4a/83/41fc6b329baa5c28.jpg?width=1200&height=630&crop=true";
+	hotel.Amenities = hotelRepository.getAmenitiesFor(id)
+	hotel.Reviews = hotelRepository.getSomeReviewsFor(id)
+	hotel.Address = hotelRepository.getAddressFor(id)
 
 	if err != nil {
-		return schemas.Hotel{}, fmt.Errorf("unable to query hotels: %w", err)
+		return schemas.HotelSpecificData{}, fmt.Errorf("unable to query hotels: %w", err)
 	}
 	return hotel, nil
 }

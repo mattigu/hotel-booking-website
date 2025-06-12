@@ -8,18 +8,6 @@ type Hotel struct {
 	StarStandard int32  `json:"star_standard"`
 }
 
-type TestStruct struct {
-	Id   int64  `json:"id"`
-	Name string `json:"name"`
-}
-
-type HotelOverview struct {
-	Id   int64  `json:"id"`
-	Name string `json:"name"`
-	Desc string `json:"description"`
-	Star int64 `json:"star_standard"`
-}
-
 type HotelInfo struct {
 	Id   		int64  	`json:"id"`
 	Name 		string 	`json:"name"`
@@ -35,4 +23,12 @@ type HotelSearchQueryDetails struct {
 	StartDate	string
 	EndDate		string
 	Guests		int
+}
+
+type HotelSpecificData struct {
+	PhotoUrl		string		`json:"photo_url"`
+	Description  	string 		`json:"description"`
+	Address 		AddressData	`json:"address"`
+	Amenities 		[]Amenities	`json:"amenities"`
+	Reviews 		[]ReviewData `json:"reviews"`
 }

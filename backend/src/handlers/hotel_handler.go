@@ -35,7 +35,7 @@ func (hotelHandler *HotelHandler) GetById(responseWriter http.ResponseWriter, re
 	if err != nil {
 		return app_err.WithHTTPStatus(err, http.StatusBadRequest)
 	}
-	hotels, err := hotelHandler.service.GetById(int64(i))
+	hotels, err := hotelHandler.service.GetById(int(i))
 	if err != nil {
 		return app_err.WithHTTPStatus(err, http.StatusBadRequest)
 	}

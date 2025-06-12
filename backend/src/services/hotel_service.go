@@ -19,7 +19,7 @@ func (hotelService *HotelService) GetAll() ([]schemas.Hotel, error) {
 	return hotelService.repository.GetAll()
 }
 
-func (hotelService *HotelService) GetById(id int64) (schemas.Hotel, error) {
+func (hotelService *HotelService) GetById(id int) (schemas.HotelSpecificData, error) {
 	return hotelService.repository.GetById(id)
 }
 
