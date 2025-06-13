@@ -23,7 +23,7 @@ async function search() {
 	}
 	const request = constructRequest(query)
 
-	const { data: hotels, execute } = useFetch(request, { immediate: false });
+	const { data: hotels, execute } = useFetch(request);
 	await execute();
 
 	emit('search_complete', hotels.value)
