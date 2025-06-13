@@ -27,7 +27,7 @@ const hotel = props.hotel
   <div class="hotel_img">
     <img :src="`{{ hotel.photo_url }}`" onerror="this.onerror=null;src=`https://u.profitroom.com/2018-focushotels-pl/thumb/1920x1080/uploads/DJI_0372_MID.jpg`">
   </div>
-  <hr style="height: 10px; color: rgb(00, 77, 85); background-color: rgb(00, 77, 85); border-radius: 5%;">
+  <hr>
   <div class="hotel_description">
     <h2>About this hotel</h2>
     <p>{{ hotel.description }}</p>

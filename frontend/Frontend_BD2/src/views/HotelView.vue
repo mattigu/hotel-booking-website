@@ -48,7 +48,7 @@ loadHotel(props.id)
     <HotelPage :hotel="hotel" />
   </div>
   <div class="reviews" v-if="hotel">
-    <hr style="height: 10px; color: rgb(00, 77, 85); background-color: rgb(00, 77, 85); border-radius: 5%;">
+    <hr>
     <h2>Reviews</h2>
     <ReviewForm @review_posted="addReviewToHotel" />
 
