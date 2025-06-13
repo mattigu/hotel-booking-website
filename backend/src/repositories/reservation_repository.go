@@ -7,7 +7,7 @@ import (
 //	"fmt"
 //	"os"
 	"github.com/jackc/pgx/v5"
-	"strconv"
+//	"strconv"
 )
 
 type ReservationRepository struct{
@@ -15,13 +15,13 @@ type ReservationRepository struct{
 }
 
 func (reservationRepository *ReservationRepository) ReserveRoom(reservationData *schemas.Reservation) error{
-	query := `INSERT INTO reservations ("id", "customer_id", "hotel_id", "room_ids", "start_date", "end_date", "payment_info_id") 
-		VALUES ((SELECT max(id) + 1 FROM reservations), @customerId, @hotelId, '{` + strconv.Itoa(reservationData.RoomId) + `}', @startDate, @endDate, @paymentInfoId)`
+	query := `INSERT INTO reservations ("id", "customer_id", "hotel_id", "room_id", "start_date", "end_date", "payment_info_id") 
+		VALUES ((SELECT max(id) + 1 FROM reservations), @customerId, @hotelId, @roomId, @startDate, @endDate, @paymentInfoId)`
 
 	args := pgx.NamedArgs{
 		"customerId": reservationData.CustomerId,
 		"hotelId": reservationData.HotelId,
-		"roomIds": reservationData.RoomId,
+		"roomId": reservationData.RoomId,
 		"startDate": reservationData.StartDate,
 		"endDate": reservationData.EndDate,
 		"paymentInfoId": reservationData.PaymentId,
