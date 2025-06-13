@@ -15,6 +15,7 @@ export default defineConfig([
 		},
 		rules: {
 			"@stylistic/no-multi-spaces": "error",
+			"@stylistic/indent": ["error", "tab"],
 
 			"vue/html-indent": ["error", 2],
 			"vue/script-indent": ["error", "tab"],
@@ -22,12 +23,12 @@ export default defineConfig([
 			"vue/html-closing-bracket-newline" : "off",
 			"vue/max-attributes-per-line": ["error", {
 				"singleline": {
-				  "max": 2
+					"max": 2
 				},
 				"multiline": {
-				  "max": 1
+					"max": 1
 				}
-			  }]
+			}]
 		}
 	},
 

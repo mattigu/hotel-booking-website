@@ -1,3 +1,8 @@
+<script>
+export default { name: 'HotelBrowseView' }
+</script>
+
+
 <script setup>
 import { ref } from 'vue'
 import HotelPreview from '@/components/HotelPreview.vue';
