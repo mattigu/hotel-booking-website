@@ -1,6 +1,7 @@
 <script setup>
 
 import { ref, inject } from 'vue'
+import { useFetch } from '@/composables/useFetch'
 import vue3StarRatings from "vue3-star-ratings"
 
 const API_URL = inject('API_URL')
@@ -20,17 +21,14 @@ async function postReview() {
 		body: JSON.stringify(review),
 		headers: {
 			"Content-Type": "application/json"
-		}
-	});
-	try {
-		const response = await fetch(request)
-		if (!response.ok) {
-			throw new Error(`Failed to get response`);}
-		emit('review_posted', review)
-	} catch (error) {
-		console.error(error.message);
-		return alert("Failed")
+		}})
+	const { error, execute } = useFetch(request)
+	await execute()
 
+	if (error.value) {
+		alert(`Error: ${error.value}`)
+	} else {
+		emit('review_posted', review)
 	}
 }
 

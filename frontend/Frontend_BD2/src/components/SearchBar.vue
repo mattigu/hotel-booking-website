@@ -1,27 +1,16 @@
 <script setup>
 import { ref, inject } from 'vue'
+import { useFetch } from '@/composables/useFetch'
+
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 
 const API_URL = inject('API_URL')
 const emit = defineEmits(['search_complete'])
 
-async function fetchHotels(query) {
-	const url = API_URL + '/get/hotels?' + new URLSearchParams(query)
-	const request = new Request(url, {
-		method: "GET",
-	});
-	try {
-		const response = await fetch(request)
-		if (!response.ok) {
-			throw new Error(`Failed to get response`);}
-		let hotels = await response.json();
-		return hotels
-	} catch (error) {
-		console.error(error.message);
-		return alert("Failed")
-
-	}
+function constructRequest(query) {
+	const url = API_URL + '/get/hotels?' + new URLSearchParams(query);
+	return new Request(url, { method: 'GET' });
 }
 
 async function search() {
@@ -32,8 +21,12 @@ async function search() {
 		enddate: parsedDateRange[1],
 		guests: formNumPeople.value
 	}
-	const hotels = await fetchHotels(query)
-	emit('search_complete', hotels)
+	const request = constructRequest(query)
+
+	const { data: hotels, execute } = useFetch(request);
+	await execute();
+
+	emit('search_complete', hotels.value)
 }
 
 function formatDate(date) {

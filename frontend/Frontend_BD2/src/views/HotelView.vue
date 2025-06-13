@@ -1,5 +1,7 @@
 <script setup>
-import { ref, inject } from 'vue'
+import { inject, ref } from 'vue'
+import { useFetch } from '@/composables/useFetch'
+
 import ReviewForm from '@/components/ReviewForm.vue'
 import ReviewBox from '@/components/ReviewBox.vue'
 import HotelPage from '@/components/HotelPage.vue'
@@ -14,32 +16,19 @@ const props = defineProps({
 	}
 })
 
-async function fetchHotel(id) {
-	const url = API_URL + `/get/hotel/${ id }`
-	const request = new Request(url, {
-		method: "GET",
-	});
-
-	try {
-		const response = await fetch(request)
-		if (!response.ok) {
-			throw new Error(`Failed to get response`);}
-		const hotel = await response.json();
-		return hotel
-	} catch (error) {
-		console.error(error.message);
-		alert("Failed")
-		return;
-	}
-}
-
 function addReviewToHotel(newReview) {
 	hotel.value.reviews.unshift(newReview)
 }
 
-const hotel = ref(null)
-const loadHotel = async (id) => {hotel.value = await fetchHotel(id)}
-loadHotel(props.id)
+async function loadHotel() {
+	const request = new Request(`${API_URL}/get/hotel/${props.id}`, { method: 'GET' })
+	const { data, execute } = useFetch(request)
+	await execute()
+	hotel.value = data.value
+}
+
+const hotel = ref()
+loadHotel()
 
 </script>
 

@@ -24,7 +24,7 @@ const { id, name, star_standard, photo_url } = props.hotel
         v-model="star_standard"
         :disable-click="true"
       />
-      <RouterLink :id="id" :to="`hotel/${ id }`">Check availability</RouterLink>
+      <RouterLink :id="id" :to="`/hotel/${ id }`">Check availability</RouterLink>
     </div>
   </div>
 </template>
