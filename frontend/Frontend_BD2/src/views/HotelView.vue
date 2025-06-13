@@ -32,6 +32,10 @@ async function fetchHotel(id) {
 	}
 }
 
+function addReviewToHotel(newReview) {
+	hotel.value.reviews.unshift(newReview)
+}
+
 const hotel = ref(null)
 const loadHotel = async (id) => {hotel.value = await fetchHotel(id)}
 loadHotel(props.id)
@@ -60,7 +64,7 @@ loadHotel(props.id)
     </div>
   </div>
 
-  <ReviewForm />
+  <ReviewForm @review_posted="addReviewToHotel" />
 
   <div class="reviews" v-if="hotel">
     <template
