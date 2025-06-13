@@ -32,7 +32,7 @@ async function postReview() {
 }
 
 function handleRating(value) { // Rounds to nearest integer
-	formStars.value = Math.round(value)
+	formStars.value = Math.floor(value + 1)
 }
 
 const formText = ref()
