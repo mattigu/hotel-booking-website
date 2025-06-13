@@ -6,6 +6,12 @@ CREATE TABLE "hotels" (
   "star_standard" integer NOT NULL
 );
 
+CREATE TABLE "room_ammount" (
+  "hotel_id" integer NOT NULL,
+  "room_id" integer NOT NULl,
+  "ammount" integer NOT NULL
+);
+
 CREATE TABLE "hotel_amenities" (
   "id" SERIAL PRIMARY KEY,
   "hotel_id" integer NOT NULL,
@@ -52,16 +58,10 @@ CREATE TABLE "reservations" (
   "id" SERIAL PRIMARY KEY,
   "customer_id" integer NOT NULL,
   "hotel_id" integer NOT NULL,
-  "room_ids" integer[] NOT NULL,
+  "room_id" integer NOT NULL,
   "start_date" date NOT NULL,
   "end_date" date NOT NULL,
   "payment_info_id" integer NOT NULL
-);
-
-CREATE TABLE "reservation_rooms" (
-  "reservation_id" integer,
-  "room_id" integer,
-  PRIMARY KEY ("reservation_id", "room_id")
 );
 
 CREATE TABLE "promotions" (
@@ -120,15 +120,27 @@ CREATE TABLE "vacancy_history" (
 );
 
 CREATE TABLE "hotel_ratings" (
-    "hotel_id" integer PRIMARY KEY,
-    "current_rating" numeric(3, 2) NOT NULL
+  "hotel_id" integer PRIMARY KEY,
+  "current_rating" numeric(3, 2) NOT NULL
 );
 
--- Do wywalenia
-create table teststruct(
-    id      int primary key generated always as identity,
-    name    text
+CREATE TABLE "reservation_addons" (
+  "id" integer PRIMARY KEY,
+  "name" text,
+  "price" integer
 );
+
+CREATE TABLE "hotel_to_addon" (
+  "hotel_id" integer NOT NULL,
+  "addon_id" integer NOT NULL
+);
+
+CREATE TABLE "reservation_rooms" (
+  "reservation_id" integer,
+  "room_id" integer,
+  PRIMARY KEY ("reservation_id", "room_id")
+);
+
 
 ALTER TABLE "hotels" ADD FOREIGN KEY ("address_id") REFERENCES "addresses" ("id") ON DELETE CASCADE;
 
@@ -146,8 +158,6 @@ ALTER TABLE "reservations" ADD FOREIGN KEY ("customer_id") REFERENCES "customers
 
 ALTER TABLE "reservations" ADD FOREIGN KEY ("hotel_id") REFERENCES "hotels" ("id") ON DELETE CASCADE;
 
-ALTER TABLE "reservation_rooms" ADD FOREIGN KEY ("reservation_id") REFERENCES "reservations" ("id") ON DELETE CASCADE;
-
 ALTER TABLE "reservations" ADD FOREIGN KEY ("payment_info_id") REFERENCES "payments" ("id");
 
 ALTER TABLE "promotions" ADD FOREIGN KEY ("hotel_id") REFERENCES "hotels" ("id") ON DELETE CASCADE;
@@ -161,3 +171,13 @@ ALTER TABLE "avg_price_history" ADD FOREIGN KEY ("hotel_id") REFERENCES "hotels"
 ALTER TABLE "vacancy_history" ADD FOREIGN KEY ("hotel_id") REFERENCES "hotels" ("id") ON DELETE CASCADE;
 
 ALTER TABLE "hotel_ratings" ADD FOREIGN KEY ("hotel_id") REFERENCES "hotels" ("id") ON DELETE CASCADE;
+
+ALTER TABLE "hotel_to_addon" ADD FOREIGN KEY ("hotel_id") REFERENCES "hotels" ("id") ON DELETE CASCADE;
+
+ALTER TABLE "hotel_to_addon" ADD FOREIGN KEY ("addon_id") REFERENCES "reservation_addons" ("id") ON DELETE CASCADE;
+
+ALTER TABLE "room_ammount" ADD FOREIGN KEY ("hotel_id") REFERENCES "hotels" ("id") ON DELETE CASCADE;
+
+ALTER TABLE "room_ammount" ADD FOREIGN KEY ("room_id") REFERENCES "rooms" ("id") ON DELETE CASCADE;
+
+ALTER TABLE "reservation_rooms" ADD FOREIGN KEY ("reservation_id") REFERENCES "reservations" ("id") ON DELETE CASCADE;
