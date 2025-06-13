@@ -47,6 +47,7 @@ loadHotel(props.id)
   <div v-if="hotel" class="hotel_view">
     <HotelPage :hotel="hotel" />
   </div>
+
   <div class="reviews" v-if="hotel">
     <hr>
     <h2>Reviews</h2>
