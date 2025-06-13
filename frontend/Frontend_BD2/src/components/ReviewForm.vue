@@ -1,5 +1,7 @@
 <script setup>
+
 import { ref, inject } from 'vue'
+import vue3StarRatings from "vue3-star-ratings"
 
 const API_URL = inject('API_URL')
 
@@ -28,14 +30,23 @@ async function postReview() {
 
 	}
 }
+
+function handleRating(value) { // Rounds to nearest integer
+	formStars.value = Math.round(value)
+}
+
 const formText = ref()
 const formUsername = ref()
-const formStars = ref(1)
+const formStars = ref(4)
 
 </script>
 
 <template>
   <form @submit.prevent="postReview" id="review_form">
+    <vue3StarRatings
+      :model-value="formStars"
+      @update:model-value="handleRating"
+    />
     <input
       type="text"
       name="username"

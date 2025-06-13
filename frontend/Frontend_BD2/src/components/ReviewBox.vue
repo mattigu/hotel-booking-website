@@ -1,4 +1,5 @@
 <script setup>
+import vue3StarRatings from "vue3-star-ratings"
 
 const props = defineProps({
 	review: {
@@ -14,7 +15,10 @@ const { review_text, username, rating } = props.review
 
 <template>
   <div class="review">
-    <h1>{{ rating }} stars: {{ username }} </h1>
+    <vue3StarRatings
+      v-model="rating"
+      :disable-click="true" />
+    <h1> {{ username }} </h1>
     <p>{{ review_text }}</p>
   </div>
 </template>
