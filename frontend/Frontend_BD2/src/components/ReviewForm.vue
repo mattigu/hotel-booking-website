@@ -5,6 +5,8 @@ import vue3StarRatings from "vue3-star-ratings"
 
 const API_URL = inject('API_URL')
 
+const emit = defineEmits(['review_posted'])
+
 async function postReview() {
 	const review = {
 		hotel_id: 		1,
@@ -24,6 +26,7 @@ async function postReview() {
 		const response = await fetch(request)
 		if (!response.ok) {
 			throw new Error(`Failed to get response`);}
+		emit('review_posted', review)
 	} catch (error) {
 		console.error(error.message);
 		return alert("Failed")
@@ -32,7 +35,7 @@ async function postReview() {
 }
 
 function handleRating(value) { // Rounds to nearest integer
-	formStars.value = Math.round(value)
+	formStars.value = Math.floor(value + 1)
 }
 
 const formText = ref()
