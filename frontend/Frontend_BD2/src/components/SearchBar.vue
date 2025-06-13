@@ -26,7 +26,7 @@ async function search() {
 	const { data: hotels, execute } = useFetch(request, { immediate: false });
 	await execute();
 
-	emit('search_complete', hotels)
+	emit('search_complete', hotels.value)
 }
 
 function formatDate(date) {
