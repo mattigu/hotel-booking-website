@@ -1,19 +1,25 @@
 <script setup>
+
+import vue3StarRatings from "vue3-star-ratings"
+
 const props = defineProps({
-	name: {
-		type: String,
-		required: true
-	},
-	id: {
-		type: Number,
+	hotel: {
+		type: Object,
 		required: true
 	}
 })
 
+// For now only these since the request is about to change anyway
+const { id, name, star_standard } = props.hotel
+
 </script>
 <template>
   <div class="hotel">
-    <h1> {{ props.name }} HOTEL ID: {{ props.id }} </h1>
+    <h1> {{ name }} HOTEL ID: {{ id }} </h1>
+    <vue3StarRatings
+      v-model="star_standard"
+      :disable-click="true"
+    />
     <RouterLink :id="id" :to="`hotel/${ id }`">Check availability</RouterLink>
   </div>
 </template>

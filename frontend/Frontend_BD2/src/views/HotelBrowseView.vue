@@ -2,7 +2,6 @@
 export default { name: 'HotelBrowseView' }
 </script>
 
-
 <script setup>
 import { ref } from 'vue'
 import HotelPreview from '@/components/HotelPreview.vue';
@@ -25,8 +24,7 @@ function handleSearch(hotels) {
     :key="hotel.id"
   >
     <HotelPreview
-      :name="hotel.name"
-      :id="hotel.id"
+      :hotel="hotel"
     />
   </template>
 </template>
