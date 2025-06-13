@@ -10,13 +10,13 @@ const props = defineProps({
 })
 
 // For now only these since the request is about to change anyway
-const { id, name, star_standard } = props.hotel
+const { id, name, star_standard, photo_url } = props.hotel
 
 </script>
 <template>
   <div class="hotel">
     <div class="preview_img">
-      <img :src="`{{ hotel.photo_url }}`" onerror="this.onerror=null;src=`https://u.profitroom.com/2018-focushotels-pl/thumb/1920x1080/uploads/DJI_0372_MID.jpg`">
+      <img :src="photo_url" onerror="this.onerror=null;src=`https://u.profitroom.com/2018-focushotels-pl/thumb/1920x1080/uploads/DJI_0372_MID.jpg`">
     </div>
     <div class="preview_text">
       <h1> {{ name }} HOTEL ID: {{ id }} </h1>
