@@ -134,7 +134,7 @@ func (repository *HotelRepository) getAddressFor(id int) schemas.AddressData{
 }
 
 func (hotelRepository *HotelRepository) GetById(id int) (schemas.HotelSpecificData, error) {
-	query := `select h.name, h.description 
+	query := `select h.name, h.description, h.star_standard
 	from hotels h inner join addresses d on h.address_id=d.id
 	where h.id=@id`
 
@@ -145,6 +145,7 @@ func (hotelRepository *HotelRepository) GetById(id int) (schemas.HotelSpecificDa
 	err := hotelRepository.Db.Pool().QueryRow(context.Background(), query, args).Scan(
 		&hotel.Name,
 		&hotel.Description,
+		&hotel.StarStandard,
 		)
 	hotel.PhotoUrl = "https://content.r9cdn.net/rimg/kimg/4a/83/41fc6b329baa5c28.jpg?width=1200&height=630&crop=true";
 	hotel.Amenities = hotelRepository.getAmenitiesFor(id)
