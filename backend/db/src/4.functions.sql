@@ -36,7 +36,7 @@ CREATE OR REPLACE function add_new_user(
     name text,
     surname text,
     phone_number text
-) RETURNS boolean as $$;
+) RETURNS boolean as $$
 DECLARE
     found_customer INTEGER;
 BEGIN
