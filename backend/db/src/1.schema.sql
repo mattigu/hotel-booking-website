@@ -98,8 +98,9 @@ CREATE TABLE "reviews" (
 CREATE TABLE "payments" (
   "id" SERIAL PRIMARY KEY,
   "payment_type" text NOT NULL,
+  "payment_data" text,
   "due_date" date NOT NULL,
-  "amount" integer NOT NULL,
+  "amount" text NOT NULL,
   "fulfilled" boolean DEFAULT false
 );
 

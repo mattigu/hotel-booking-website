@@ -176,7 +176,6 @@ func (repository *HotelRepository) GetById(id int, guests int) (schemas.HotelSpe
 		&hotel.Name,
 		&hotel.Description,
 		&hotel.StarStandard,
-		&hotel.StarStandard,
 		)
 	hotel.PhotoUrl = "https://content.r9cdn.net/rimg/kimg/4a/83/41fc6b329baa5c28.jpg?width=1200&height=630&crop=true";
 	hotel.Amenities = repository.getAmenitiesFor(id)
