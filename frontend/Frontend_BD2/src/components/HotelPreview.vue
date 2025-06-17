@@ -10,7 +10,7 @@ const props = defineProps({
 })
 
 // For now only these since the request is about to change anyway
-const { id, name, star_standard, single_beds, double_beds, photo_url } = props.hotel
+const { id, name, star_standard, sigle_beds, double_beds, photo_url, price } = props.hotel
 
 </script>
 <template>
@@ -26,26 +26,37 @@ const { id, name, star_standard, single_beds, double_beds, photo_url } = props.h
         />
       </span>
 
-      <h1> name </h1>
+      <h1> {{ name }} </h1>
 
       <RouterLink :id="id" :to="`/hotel/${ id }`">Check availability</RouterLink>
+    </div>
+
+    <div class="best_offer_info">
+      <p>Best offer</p>
+      {{ price }}
+      <p>single beds:{{ sigle_beds }}</p>
+      <p>double beds:{{ double_beds }}</p>
     </div>
   </div>
 </template>
 
 <style>
 .hotel {
-	background-color: rgb(172, 221, 221);
+  border-radius: 8px;
+  border: 2px solid #ddd;
+
 	width: 70%;
 	display: flex;
+  margin: auto;
 }
 
 .preview_img img {
 	object-fit: cover;
-    height: 240px;
-    width: 240px;
-    border-radius: 5%;
+  height: 240px;
+  width: 240px;
+  border-radius: 5%;
 	aspect-ratio: 1;
+  margin: 2%;
 }
 
 .preview_info {

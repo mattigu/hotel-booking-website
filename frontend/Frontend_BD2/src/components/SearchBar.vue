@@ -49,31 +49,55 @@ const formDateRange = ref(debugDates)
 
 <template>
   <form @submit.prevent="search" id="search">
-    <button type="submit">Search</button>
-    <input
-      type="text"
-      v-model="formCity"
-      required
-    >
-    <VueDatePicker
-      v-model="formDateRange"
-      range
-    /> <!--  :min-date="new Date()" -->
+    <div class="top">
+      <input
+        type="text"
+        v-model="formCity"
+        required
 
-    <input
-      type="number"
-      v-model="formNumPeople"
-      min="0"
-      max="10"
-      required
-    >
+        style="width: 80%;"
+      >
+
+      <VueDatePicker
+        v-model="formDateRange"
+        range
+
+        style="padding-top: 1px; padding-left:2px; padding-right: 2px;"
+      /> <!--  :min-date="new Date()" -->
+
+      <input
+        type="number"
+        v-model="formNumPeople"
+        min="0"
+        max="10"
+        required
+
+        style="width: 15%;"
+      >
+      <button type="submit">Search</button>
+    </div>
   </form>
 </template>
 
 
 <style>
 #search {
-	max-width: 50%;
+	max-width: 70%;
+  margin: auto;
+  padding: 1%;
+}
+
+
+.top {
+  display: flex;
+  height: 40px;
+  padding: 0.5%;
+	background-color: rgb(00, 77, 85);
+  border-radius: 5px;
+}
+
+.top button {
+  width: 10%;
 }
 </style>
 
