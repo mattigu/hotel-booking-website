@@ -116,7 +116,7 @@ func (repository *ReservationRepository) addUser(user *schemas.UserData) error{
 		"phoneNumber": user.PhoneNumber,
 	}
 
-	repository.Db.Pool().Query(context.Background(), query, args)
+	repository.Db.Pool().Exec(context.Background(), query, args)
 
 	return nil
 }
@@ -141,29 +141,19 @@ func (repository *ReservationRepository) addPaymentInfo (paymentInfo *schemas.Pa
 	strconv.Itoa(paymentInfo.Amount)+`', true)
 	RETURNING id;`
 
-	rows, err := repository.Db.Pool().Query(context.Background(), query)
+	var paymentId int;
+	err := repository.Db.Pool().QueryRow(context.Background(), query).Scan(&paymentId)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Can't retrieve rows from db %v\n", err)
 		os.Exit(1)
 	}
-	defer rows.Close()
 
-	var paymentId int;
-	for rows.Next(){
-		err := rows.Scan(
-			&paymentId,
-		)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error scanning rows %v\n", err)
-		}
-	}
 	return paymentId;
 }
 
 func (repository *ReservationRepository) ReserveRoom(reservationData *schemas.Reservation) error{
 	userId := repository.addUserIfAbsent(&reservationData.Customer)
 
-	println(reservationData.StartDate, reservationData.EndDate)
 	timeStart, _ := time.Parse("2006-01-02", reservationData.StartDate)
 	timeEnd, _ := time.Parse("2006-01-02", reservationData.EndDate)
 
@@ -185,7 +175,7 @@ func (repository *ReservationRepository) ReserveRoom(reservationData *schemas.Re
 		"paymentInfoId": paymentId,
 	}
 
-	repository.Db.Pool().Query(context.Background(), query, args)
+	repository.Db.Pool().Exec(context.Background(), query, args)
 
 	return nil
 }

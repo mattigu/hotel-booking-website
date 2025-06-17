@@ -20,12 +20,12 @@ func (repository *ReviewRepository) PostReview(review *schemas.NewReview) error{
 
 	query := `INSERT INTO reviews ("username", "hotel_id", "rating", "review_text", "upload_date") VALUES ('`+
 		review.Username + `', ` +
-		strconv.Itoa(review.HotelId) +`, `+
+		strconv.Itoa(review.HotelId) +`, `+ 
 		strconv.Itoa(review.Rating)+`, '` + 
 		review.ReviewText + `', '`+ 
 		formattedDate +`');`
-
-	repository.Db.Pool().Query(context.Background(), query)
+	
+	repository.Db.Pool().Exec(context.Background(), query)
 
 	return nil
-}
+} 
