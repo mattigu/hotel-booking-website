@@ -113,26 +113,4 @@ INSERT INTO "reservation_addons" ("id", "name", "price") VALUES
 (4, 'Dostęp do siłowni', 30),
 (5, 'Wi-Fi Premium', 15);
 
--- Dane dla tabeli hotel_to_addon
-INSERT INTO "hotel_to_addon" ("hotel_id", "addon_id") VALUES
-(1, 1),
-(1, 2),
-(1, 3),
-(2, 1),
-(2, 4),
-(3, 2),
-(3, 5),
-(4, 1),
-(4, 3),
-(5, 1),
-(5, 2);
-
--- Dane dla tabeli reservation_add_ons
-INSERT INTO "reservation_add_ons" ("reservation_id", "addon_id") VALUES
-(1, 1),
-(1, 3),
-(2, 1),
-(2, 4),
-(3, 2);
-
 INSERT INTO reservation_addons VALUES(1, 'addon1', 100, 1);
