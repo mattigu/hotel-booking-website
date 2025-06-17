@@ -25,7 +25,7 @@ const { id, name, star_standard, single_beds, double_beds, photo_url } = props.h
           :disable-click="true"
         />
       </span>
-	  
+
       <h1> name </h1>
 
       <RouterLink :id="id" :to="`/hotel/${ id }`">Check availability</RouterLink>
