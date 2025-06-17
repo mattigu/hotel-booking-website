@@ -21,15 +21,15 @@ const {street, city, house_number, country} = address
   <!-- must use div here for display: flex, but maybe there's a better solution -->
   <div class="hotel_top">
     <div class="hotel_title">
-      <h2>{{ name }}, {{ city }}</h2>
+      <h2 style="padding-right: 20px;">{{ name }}, {{ city }}</h2>
       <p>{{ street }} {{ house_number }}, {{ city }}, {{ country }}</p>
     </div>
 
-    <div class="stars">
+    <h2>
       <vue3StarRatings
         v-model="star_standard"
         :disable-click="true" />
-    </div>
+    </h2>
   </div>
 
   <div class="hotel_img">
@@ -74,11 +74,6 @@ const {street, city, house_number, country} = address
 
 .hotel_top {
 	display: flex;
-}
-
-.stars {
-	padding-left: 5%;
-	padding-top: 1.75%;
 }
 
 .review_grid {
