@@ -106,11 +106,9 @@ INSERT INTO "vacancy_history" ("hotel_id", "period_start", "period_end", "vacanc
 (2, '2024-01-01', '2024-06-30', 15);
 
 -- Dane dla tabeli reservation_addons
-INSERT INTO "reservation_addons" ("id", "name", "price") VALUES
-(1, 'Śniadanie', 45),
-(2, 'Parking', 25),
-(3, 'Dostęp do SPA', 80),
-(4, 'Dostęp do siłowni', 30),
-(5, 'Wi-Fi Premium', 15);
-
-INSERT INTO reservation_addons VALUES(1, 'addon1', 100, 1);
+INSERT INTO "reservation_addons" ("id", "name", "price", "hotel_id") VALUES
+(1, 'Śniadanie', 45, 1),
+(2, 'Parking', 25, 2),
+(3, 'Dostęp do SPA', 80, 1),
+(4, 'Dostęp do siłowni', 30, 3),
+(5, 'Wi-Fi Premium', 15, 1);
