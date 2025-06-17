@@ -133,3 +133,25 @@ odpowiedź:
 ]
 
 ```
+
+--------------------
+
+### 6. /get/configuration?hotel_id=[id]&guests=[guests]
+
+przykładowe zapytanie:
+`localhost:3000/get/configuration?hotel_id=1&guests=2`
+
+odpowiedź:
+
+```json
+[
+    {
+        "single_beds":1,
+        "double_beds":1
+    },
+    {
+        "single_beds":2,
+        "double_beds":0
+    }
+]
+```

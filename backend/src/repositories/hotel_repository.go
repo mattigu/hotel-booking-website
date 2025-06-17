@@ -183,7 +183,6 @@ func (repository *HotelRepository) GetById(id int, guests int) (schemas.HotelSpe
 	hotel.Reviews = repository.getSomeReviewsFor(id)
 	hotel.Address = repository.getAddressFor(id)
 	hotel.Id = id
-	hotel.RoomConfigurations = repository.getRoomsForGuests(id, guests)
 
 	if err != nil {
 		return schemas.HotelSpecificData{}, fmt.Errorf("unable to query hotels: %w", err)
@@ -231,4 +230,11 @@ func (hotelRepository *HotelRepository) GetHotelsSearchQuery(searchQuery *schema
 func (hotelRepository *HotelRepository) getReservedHotelsId(city string, startDate string, endDate string, ) ([]schemas.HotelInfo, error){
 	//query := "SELECT id FROM hotels "
 	return nil, nil
+}
+
+func (repository *HotelRepository) GetRoomConfigurations(hotelId int, guests int) ([]schemas.RoomConfiguration, error) {
+	var roomConfiguration []schemas.RoomConfiguration;
+	roomConfiguration = repository.getRoomsForGuests(hotelId, guests)
+
+	return roomConfiguration, nil
 }
