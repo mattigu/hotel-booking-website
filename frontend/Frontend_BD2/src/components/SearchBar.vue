@@ -61,9 +61,10 @@ const formDateRange = ref(debugDates)
       <VueDatePicker
         v-model="formDateRange"
         range
-
+        :enable-time-picker="false"
         style="padding-top: 1px; padding-left:2px; padding-right: 2px;"
-      /> <!--  :min-date="new Date()" -->
+        :min-date="new Date()"
+      />
 
       <input
         type="number"
