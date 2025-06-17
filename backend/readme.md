@@ -155,3 +155,21 @@ odpowiedź:
     }
 ]
 ```
+
+--------------------------
+
+### 7. /get/addons?hotel_id=[id]
+
+przykładowe zapytanie:
+`localhost:3000/get/addons?hotel_id=1`
+
+odpowiedź:
+```json
+[
+    {
+        "id":1,
+        "name":"addon1",
+        "price":100
+    }
+]
+```

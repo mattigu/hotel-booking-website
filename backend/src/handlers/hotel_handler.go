@@ -66,13 +66,18 @@ func (hotelHandler *HotelHandler) GetHotelsSearchQuery(responseWriter http.Respo
 }
 
 func (handler *HotelHandler) GetRoomConfigurations(res http.ResponseWriter, req *http.Request) error{
-	// getting data from the URL
 	hotelId, _ := strconv.Atoi(req.URL.Query().Get("hotel_id"))
 	guests, _ := strconv.Atoi(req.URL.Query().Get("guests"))
 
-	// geting data for the URL parameters
 	roomConfigurations := handler.service.GetRoomConfigurations(hotelId, guests)
 	
-	// w.WriteHeader(http.Status...) Change status code here if needed
+	return json.NewEncoder(res).Encode(roomConfigurations)
+}
+
+func (handler *HotelHandler) GetAddons(res http.ResponseWriter, req *http.Request) error{
+	hotelId, _ := strconv.Atoi(req.URL.Query().Get("hotel_id"))
+
+	roomConfigurations := handler.service.GetAddons(hotelId)
+	
 	return json.NewEncoder(res).Encode(roomConfigurations)
 }

@@ -105,3 +105,4 @@ INSERT INTO "vacancy_history" ("hotel_id", "period_start", "period_end", "vacanc
 (1, '2024-01-01', '2024-06-30', 20),
 (2, '2024-01-01', '2024-06-30', 15);
 
+INSERT INTO reservation_addons VALUES(1, 'addon1', 100, 1);

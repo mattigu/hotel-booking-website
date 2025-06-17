@@ -48,3 +48,9 @@ type HotelSpecificData struct {
 	RoomConfigurations []RoomConfiguration `json:"room_configurations"`
 	Addons			[]Addons	`json:"addons"`
 }
+
+type AddonData struct {
+	Id		int 	`json:"id"`
+	Name 	string 	`json:"name"`
+	Price 	int 	`json:"price"`
+}

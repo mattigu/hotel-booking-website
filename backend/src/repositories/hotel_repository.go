@@ -239,6 +239,32 @@ func (repository *HotelRepository) GetRoomConfigurations(hotelId int, guests int
 	return roomConfiguration, nil
 }
 
-func (repository *HotelRepository) GetRoomData(hotelId int, roomId int) {
-
+func (repository *HotelRepository) GetAddons(hotelId int) ([]schemas.AddonData, error){
+	query := `SELECT id, name, price
+	FROM reservation_addons
+	WHERE hotel_id = @hotelId`
+	
+	args := pgx.NamedArgs{
+		"hotelId": hotelId,
+	}
+	rows, err := repository.Db.Pool().Query(context.Background(), query, args)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Can't retrieve rows from db %v\n", err)
+		os.Exit(1)
+	}
+	defer rows.Close()
+	var addons []schemas.AddonData
+	for rows.Next() {
+		var addon schemas.AddonData
+		err := rows.Scan(
+			&addon.Id,
+			&addon.Name,
+			&addon.Price,
+		)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error scanning rows %v\n", err)
+		}
+		addons = append(addons, addon)
+	}
+	return addons, nil
 }

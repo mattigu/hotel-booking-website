@@ -31,3 +31,8 @@ func (service *HotelService) GetRoomConfigurations(hotelId int, guests int) []sc
 	val, _ := service.repository.GetRoomConfigurations(hotelId, guests)
 	return val
 }
+
+func (service *HotelService) GetAddons(hotelId int) []schemas.AddonData{
+	val, _ := service.repository.GetAddons(hotelId)
+	return val
+}

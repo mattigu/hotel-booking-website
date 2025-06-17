@@ -129,12 +129,8 @@ CREATE TABLE "hotel_ratings" (
 CREATE TABLE "reservation_addons" (
   "id" integer PRIMARY KEY,
   "name" text,
-  "price" integer CHECK ("price" >= 0)
-);
-
-CREATE TABLE "hotel_to_addon" (
-  "hotel_id" integer NOT NULL,
-  "addon_id" integer NOT NULL
+  "price" integer CHECK ("price" >= 0),
+  "hotel_id" integer NOT NULL
 );
 
 CREATE TABLE "reservation_rooms" (
@@ -173,10 +169,6 @@ ALTER TABLE "avg_price_history" ADD FOREIGN KEY ("hotel_id") REFERENCES "hotels"
 ALTER TABLE "vacancy_history" ADD FOREIGN KEY ("hotel_id") REFERENCES "hotels" ("id") ON DELETE CASCADE;
 
 ALTER TABLE "hotel_ratings" ADD FOREIGN KEY ("hotel_id") REFERENCES "hotels" ("id") ON DELETE CASCADE;
-
-ALTER TABLE "hotel_to_addon" ADD FOREIGN KEY ("hotel_id") REFERENCES "hotels" ("id") ON DELETE CASCADE;
-
-ALTER TABLE "hotel_to_addon" ADD FOREIGN KEY ("addon_id") REFERENCES "reservation_addons" ("id") ON DELETE CASCADE;
 
 ALTER TABLE "room_ammount" ADD FOREIGN KEY ("hotel_id") REFERENCES "hotels" ("id") ON DELETE CASCADE;
 
