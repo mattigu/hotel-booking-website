@@ -135,7 +135,7 @@ func (repository *HotelRepository) getAddressFor(id int) schemas.AddressData{
 }
 
 func (hotelRepository *HotelRepository) getRoomsForGuests(hotelId int, guests int) ([]schemas.RoomConfiguration){
-	query := `SELECT single_bed_num, double_bed_num
+	query := `SELECT single_bed_num, double_bed_num, base_price
 		FROM rooms
 		WHERE hotel_id=@id and single_bed_num + double_bed_num * 2 >= @guests;`
 	
@@ -155,6 +155,7 @@ func (hotelRepository *HotelRepository) getRoomsForGuests(hotelId int, guests in
 		err := rows.Scan(
 			&room.SingleBeds,
 			&room.DoubleBeds,
+			&room.Price,
 		)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error scanning rows %v\n", err)
@@ -176,7 +177,7 @@ func (repository *HotelRepository) getAverageRating(hotelId int) (float32, error
 		)
 
 	if err != nil {
-		return -1, fmt.Errorf("unable to query hotels: %w", err)
+		return 0, nil
 	}
 	return rating, nil
 }
@@ -209,7 +210,7 @@ func (repository *HotelRepository) GetById(id int, guests int) (schemas.HotelSpe
 }
 
 func (hotelRepository *HotelRepository) GetHotelsSearchQuery(searchQuery *schemas.HotelSearchQueryDetails) ([]schemas.HotelInfo, error){
-	query := `SELECT DISTINCT on (h.id) h.id, h.name, h.star_standard, r.single_bed_num, r.double_bed_num
+	query := `SELECT DISTINCT on (h.id) h.id, h.name, h.star_standard, r.single_bed_num, r.double_bed_num, r.base_price
 		FROM hotels h 
 			INNER JOIN addresses a on a.id=h.address_id
 			INNER JOIN rooms r on r.hotel_id=h.id
@@ -234,8 +235,8 @@ func (hotelRepository *HotelRepository) GetHotelsSearchQuery(searchQuery *schema
 			&hotel.Star,
 			&hotel.SingleBeds,
 			&hotel.DoubleBeds,
+			&hotel.Price,
 		)
-		hotel.Price = "100.99";
 		hotel.PhotoUrl = "https://content.r9cdn.net/rimg/kimg/4a/83/41fc6b329baa5c28.jpg?width=1200&height=630&crop=true";
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error scanning rows %v\n", err)

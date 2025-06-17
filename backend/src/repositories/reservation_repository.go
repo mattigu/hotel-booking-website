@@ -167,10 +167,7 @@ func (repository *ReservationRepository) ReserveRoom(reservationData *schemas.Re
 	timeStart, _ := time.Parse("2006-01-02", reservationData.StartDate)
 	timeEnd, _ := time.Parse("2006-01-02", reservationData.EndDate)
 
-
 	duration := timeEnd.Sub(timeStart);
-
-	println(duration.Hours())
 
 	reservationData.PaymentId.Amount = repository.calculatePrice(reservationData.Addons) +
 		repository.getRoomPrice(reservationData.RoomId, int(math.Round(duration.Hours()/24)))

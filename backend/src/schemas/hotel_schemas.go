@@ -26,8 +26,9 @@ type HotelSearchQueryDetails struct {
 }
 
 type RoomConfiguration struct {
-	SingleBeds int	`json:"single_beds"`
-	DoubleBeds int	`json:"double_beds"`
+	SingleBeds 	int	`json:"single_beds"`
+	DoubleBeds 	int	`json:"double_beds"`
+	Price		int	`json:"price"`
 }
 
 type Addons struct {

@@ -146,11 +146,13 @@ odpowiedź:
 [
     {
         "single_beds":1,
-        "double_beds":1
+        "double_beds":1,
+        "price":350
     },
     {
         "single_beds":2,
-        "double_beds":0
+        "double_beds":0,
+        "price":280
     }
 ]
 ```
