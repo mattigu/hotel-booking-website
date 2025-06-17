@@ -16,7 +16,7 @@ zwraca:
     {
         "id":1,
         "name":"Hotel Royal",
-        "price":"100.99",
+        "price":"350",
         "star_standard":5,
         "sigle_beds":1,
         "double_beds":1,
@@ -39,6 +39,7 @@ zwraca:
     "photo_url":"https://photo_site.net/photo.jpg",
     "star_standard":5,
     "avg_rating":4.2,
+    "rating_count":2,
     "description":"Luksusowy hotel w centrum Warszawy.",
     "address":
     {
@@ -63,9 +64,11 @@ zwraca:
     "reviews":
     [
         {
+            "id": 1,
             "username":"jan_kowalski",
             "review_text":"Niesamowite doświadczenie!",
-            "rating":5
+            "rating":5,
+            "upload_date":"2025-06-17"
         }
     ]
 }
@@ -81,6 +84,7 @@ przykładowe dane w zapytaniu:
     "hotel_id":1, 
     "start_date":"2025-05-24", 
     "end_date":"2025-05-26", 
+    "addons" : [ 1, 2 ],
     "customer":
     {
         "name": "Andrzej",
@@ -91,7 +95,7 @@ przykładowe dane w zapytaniu:
     {
         "payment_type": "przelew",
         "payment_data": "20923423409234234234",
-        "amount": "330.72"
+        "amount": 330
     }
 }
 ```
@@ -169,8 +173,18 @@ odpowiedź:
 [
     {
         "id":1,
-        "name":"addon1",
-        "price":100
+        "name":"Śniadanie",
+        "price":45
+    },
+    {
+        "id":3,
+        "name":"Dostęp do SPA",
+        "price":80
+    },
+    {
+        "id":5,
+        "name":"Wi-Fi Premium",
+        "price":15
     }
 ]
 ```

@@ -70,7 +70,7 @@ func (repository *HotelRepository) getAmenitiesFor(id int) []schemas.Amenities{
 }
 
 func (repository *HotelRepository) getSomeReviewsFor(id int) []schemas.ReviewData{
-	query := `SELECT username, rating, review_text, upload_date::text
+	query := `SELECT id, username, rating, review_text, upload_date::text
 	FROM reviews
 	WHERE hotel_id=@id
 	fetch first 10 rows only`
@@ -89,6 +89,7 @@ func (repository *HotelRepository) getSomeReviewsFor(id int) []schemas.ReviewDat
 	for rows.Next() {
 		var review schemas.ReviewData
 		err := rows.Scan(
+			&review.Id,
 			&review.Username,
 			&review.Rating,
 			&review.ReviewText,
@@ -165,21 +166,23 @@ func (hotelRepository *HotelRepository) getRoomsForGuests(hotelId int, guests in
 	return rooms
 }
 
-func (repository *HotelRepository) getAverageRating(hotelId int) (float32, error) {
-	query := `select current_rating from hotel_ratings where hotel_id=@id`
+func (repository *HotelRepository) getAverageRating(hotelId int) (float32, int, error) {
+	query := `select current_rating, review_count from hotel_ratings where hotel_id=@id`
 
 	args := pgx.NamedArgs{
 		"id": hotelId,
 	}
 	var rating float32;
+	var ratingCount int;
 	err := repository.Db.Pool().QueryRow(context.Background(), query, args).Scan(
 		&rating,
+		&ratingCount,
 		)
 
 	if err != nil {
-		return 0, nil
+		return 0, 0, nil
 	}
-	return rating, nil
+	return rating, ratingCount, nil
 }
 
 func (repository *HotelRepository) GetById(id int, guests int) (schemas.HotelSpecificData, error) {
@@ -201,7 +204,7 @@ func (repository *HotelRepository) GetById(id int, guests int) (schemas.HotelSpe
 	hotel.Reviews = repository.getSomeReviewsFor(id)
 	hotel.Address = repository.getAddressFor(id)
 	hotel.Id = id
-	hotel.AvgRating, err = repository.getAverageRating(id)
+	hotel.AvgRating, hotel.RatingsCount, err = repository.getAverageRating(id)
 
 	if err != nil {
 		return schemas.HotelSpecificData{}, fmt.Errorf("unable to query hotels: %w", err)
