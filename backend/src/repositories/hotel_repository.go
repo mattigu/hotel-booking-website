@@ -133,8 +133,38 @@ func (repository *HotelRepository) getAddressFor(id int) schemas.AddressData{
 	return address
 }
 
-func (hotelRepository *HotelRepository) GetById(id int) (schemas.HotelSpecificData, error) {
-	query := `select h.description 
+func (hotelRepository *HotelRepository) getRoomsForGuests(hotelId int, guests int) ([]schemas.RoomConfiguration){
+	query := `SELECT single_bed_num, double_bed_num
+		FROM rooms
+		WHERE hotel_id=@id and single_bed_num + double_bed_num * 2 >= @guests;`
+	
+	args := pgx.NamedArgs{
+		"id": hotelId,
+		"guests": guests,
+	}
+	rows, err := hotelRepository.Db.Pool().Query(context.Background(), query, args)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Can't retrieve rows from db %v\n", err)
+		os.Exit(1)
+	}
+	defer rows.Close()
+	var rooms []schemas.RoomConfiguration
+	for rows.Next() {
+		var room schemas.RoomConfiguration
+		err := rows.Scan(
+			&room.SingleBeds,
+			&room.DoubleBeds,
+		)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error scanning rows %v\n", err)
+		}
+		rooms = append(rooms, room)
+	}
+	return rooms
+}
+
+func (repository *HotelRepository) GetById(id int, guests int) (schemas.HotelSpecificData, error) {
+	query := `select h.name, h.description, h.star_standard
 	from hotels h inner join addresses d on h.address_id=d.id
 	where h.id=@id`
 
@@ -142,13 +172,17 @@ func (hotelRepository *HotelRepository) GetById(id int) (schemas.HotelSpecificDa
 		"id": id,
 	}
 	hotel := schemas.HotelSpecificData{}
-	err := hotelRepository.Db.Pool().QueryRow(context.Background(), query, args).Scan(
+	err := repository.Db.Pool().QueryRow(context.Background(), query, args).Scan(
+		&hotel.Name,
 		&hotel.Description,
+		&hotel.StarStandard,
 		)
 	hotel.PhotoUrl = "https://content.r9cdn.net/rimg/kimg/4a/83/41fc6b329baa5c28.jpg?width=1200&height=630&crop=true";
-	hotel.Amenities = hotelRepository.getAmenitiesFor(id)
-	hotel.Reviews = hotelRepository.getSomeReviewsFor(id)
-	hotel.Address = hotelRepository.getAddressFor(id)
+	hotel.Amenities = repository.getAmenitiesFor(id)
+	hotel.Reviews = repository.getSomeReviewsFor(id)
+	hotel.Address = repository.getAddressFor(id)
+	hotel.Id = id
+	hotel.RoomConfigurations = repository.getRoomsForGuests(id, guests)
 
 	if err != nil {
 		return schemas.HotelSpecificData{}, fmt.Errorf("unable to query hotels: %w", err)

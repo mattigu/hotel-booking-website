@@ -5,6 +5,6 @@ type Reservation struct{
 	RoomId		int		`json:"room_id"`
 	StartDate	string	`json:"start_date"`
 	EndDate 	string	`json:"end_date"`
-	CustomerId	int		`json:"customer_id"`
-	PaymentId 	int		`json:"payment_info_id"`
+	Customer 	UserData `json:"customer"`
+	PaymentId 	PaymentInfo `json:"payment_info"`
 }
