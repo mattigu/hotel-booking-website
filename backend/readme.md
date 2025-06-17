@@ -64,6 +64,7 @@ zwraca:
     "reviews":
     [
         {
+            "id":1,
             "username":"jan_kowalski",
             "review_text":"Niesamowite doświadczenie!",
             "rating":5,
