@@ -39,12 +39,12 @@ INSERT INTO "hotel_amenities" ("hotel_id", "hotel_amenity_type", "price") VALUES
 (4, 5, 0);
 
 -- Dane dla tabeli rooms
-INSERT INTO "rooms" ("hotel_id", "room_number", "single_bed_num", "double_bed_num") VALUES
-(1, 101, 1, 1),
-(1, 102, 2, 0),
-(2, 201, 1, 1),
-(3, 301, 0, 2),
-(4, 401, 1, 1);
+INSERT INTO "rooms" ("hotel_id", "room_number", "single_bed_num", "double_bed_num", "base_price") VALUES
+(1, 101, 1, 1, 350),
+(1, 102, 2, 0, 280),
+(2, 201, 1, 1, 220),
+(3, 301, 0, 2, 450),
+(4, 401, 1, 1, 550);
 
 -- Dane dla tabeli room_amenity_types
 INSERT INTO "room_amenity_types" ("name", "description") VALUES
@@ -90,10 +90,10 @@ INSERT INTO "promotions" ("hotel_id", "start_date", "end_date", "discount_flat",
 (2, '2025-05-15', '2025-05-20', 100, NULL);
 
 -- Dane dla tabeli reviews
-INSERT INTO "reviews" ("username", "hotel_id", "rating", "review_text") VALUES
-('jan_kowalski', 1, 5, 'Niesamowite doświadczenie!'),
-('anna_nowak', 2, 4, 'Bardzo wygodny pobyt.'),
-('piotr_wisniewski', 3, 3, 'Dobrze, ale mogło być lepiej.');
+INSERT INTO "reviews" ("username", "hotel_id", "rating", "review_text", "upload_date") VALUES
+('jan_kowalski', 1, 5, 'Niesamowite doświadczenie!', '2025-05-01'),
+('anna_nowak', 2, 4, 'Bardzo wygodny pobyt.', '2025-05-01'),
+('piotr_wisniewski', 3, 3, 'Dobrze, ale mogło być lepiej.', '2025-05-01');
 
 -- Dane dla tabeli avg_price_history
 INSERT INTO "avg_price_history" ("hotel_id", "period_start", "period_end", "avg_price") VALUES
@@ -105,3 +105,10 @@ INSERT INTO "vacancy_history" ("hotel_id", "period_start", "period_end", "vacanc
 (1, '2024-01-01', '2024-06-30', 20),
 (2, '2024-01-01', '2024-06-30', 15);
 
+-- Dane dla tabeli reservation_addons
+INSERT INTO "reservation_addons" ("id", "name", "price", "hotel_id") VALUES
+(1, 'Śniadanie', 45, 1),
+(2, 'Parking', 25, 2),
+(3, 'Dostęp do SPA', 80, 1),
+(4, 'Dostęp do siłowni', 30, 3),
+(5, 'Wi-Fi Premium', 15, 1);

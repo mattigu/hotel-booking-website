@@ -31,10 +31,7 @@ func (hotelHandler *HotelHandler) GetAll(responseWriter http.ResponseWriter, req
 
 func (hotelHandler *HotelHandler) GetById(responseWriter http.ResponseWriter, req *http.Request) error {
 	id := req.PathValue("id")
-	guests, err := strconv.Atoi(req.URL.Query().Get("guests"))
-	if(err != nil){
-		return app_err.WithHTTPStatus(err, http.StatusBadRequest)
-	}
+	guests := 0
 
 	i, err := strconv.Atoi(id)
 	if err != nil {
@@ -66,4 +63,21 @@ func (hotelHandler *HotelHandler) GetHotelsSearchQuery(responseWriter http.Respo
 	
 	// w.WriteHeader(http.Status...) Change status code here if needed
 	return json.NewEncoder(responseWriter).Encode(hotels)
+}
+
+func (handler *HotelHandler) GetRoomConfigurations(res http.ResponseWriter, req *http.Request) error{
+	hotelId, _ := strconv.Atoi(req.URL.Query().Get("hotel_id"))
+	guests, _ := strconv.Atoi(req.URL.Query().Get("guests"))
+
+	roomConfigurations := handler.service.GetRoomConfigurations(hotelId, guests)
+	
+	return json.NewEncoder(res).Encode(roomConfigurations)
+}
+
+func (handler *HotelHandler) GetAddons(res http.ResponseWriter, req *http.Request) error{
+	hotelId, _ := strconv.Atoi(req.URL.Query().Get("hotel_id"))
+
+	roomConfigurations := handler.service.GetAddons(hotelId)
+	
+	return json.NewEncoder(res).Encode(roomConfigurations)
 }

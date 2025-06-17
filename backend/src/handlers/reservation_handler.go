@@ -36,3 +36,15 @@ func (reservationHandler *ReservationHandler) ReserveRoom (responseWriter http.R
 	responseWriter.WriteHeader(http.StatusOK)
 	return err
 }
+
+func (handler *ReservationHandler) GetReservationsFor (responseWriter http.ResponseWriter, req *http.Request) error {
+	var userData schemas.UserData;
+
+	userData.Name = req.URL.Query().Get("name")
+	userData.Surname = req.URL.Query().Get("surname")
+	userData.PhoneNumber = req.URL.Query().Get("phone_number")
+
+	reservations := handler.service.GetReservationsForUser(&userData)
+	
+	return json.NewEncoder(responseWriter).Encode(reservations)
+}

@@ -16,9 +16,12 @@ LANGUAGE plpgsql
 AS $$
 BEGIN
   UPDATE "hotel_ratings"
-  SET "current_rating" = subquery.avg_rating
+  SET "current_rating" = subquery.avg_rating,
+      "review_count" = subquery.review_count
   FROM (
-    SELECT "hotel_id", ROUND(AVG("rating")::numeric, 2) AS avg_rating
+    SELECT "hotel_id", 
+           ROUND(AVG("rating")::numeric, 2) AS avg_rating,
+           COUNT(*) AS review_count
     FROM "reviews"
     GROUP BY "hotel_id"
   ) AS subquery

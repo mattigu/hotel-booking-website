@@ -3,7 +3,7 @@ post_cmd.txt
 pre_cmd.txt
 tmp
 
-
+/backend/db/src/7.test_trigger.sql
 # Vue
 #   Logs
 logs

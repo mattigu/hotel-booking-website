@@ -3,7 +3,7 @@ CREATE TABLE "hotels" (
   "address_id" integer NOT NULL,
   "name" text NOT NULL,
   "description" text,
-  "star_standard" integer NOT NULL
+  "star_standard" integer NOT NULL CHECK ("star_standard" BETWEEN 1 AND 5)
 );
 
 CREATE TABLE "room_ammount" (
@@ -16,15 +16,16 @@ CREATE TABLE "hotel_amenities" (
   "id" SERIAL PRIMARY KEY,
   "hotel_id" integer NOT NULL,
   "hotel_amenity_type" integer NOT NULL,
-  "price" integer NOT NULL
+  "price" integer NOT NULL CHECK ("price" >= 0)
 );
 
 CREATE TABLE "rooms" (
   "id" SERIAL PRIMARY KEY,
   "hotel_id" integer NOT NULL,
-  "room_number" integer NOT NULL,
-  "single_bed_num" integer NOT NULL,
-  "double_bed_num" integer NOT NULL
+  "room_number" integer NOT NULL CHECK ("room_number" > 0),
+  "single_bed_num" integer NOT NULL CHECK ("single_bed_num" >= 0),
+  "double_bed_num" integer NOT NULL CHECK ("double_bed_num" >= 0),
+  "base_price" integer NOT NULL CHECK ("base_price" >= 0)
 );
 
 CREATE TABLE "room_amenities" (
@@ -60,7 +61,7 @@ CREATE TABLE "reservations" (
   "hotel_id" integer NOT NULL,
   "room_id" integer NOT NULL,
   "start_date" date NOT NULL,
-  "end_date" date NOT NULL,
+  "end_date" date NOT NULL CHECK ("end_date" > "start_date"),
   "payment_info_id" integer NOT NULL
 );
 
@@ -68,9 +69,9 @@ CREATE TABLE "promotions" (
   "id" SERIAL PRIMARY KEY,
   "hotel_id" integer NOT NULL,
   "start_date" date NOT NULL,
-  "end_date" date NOT NULL,
-  "discount_flat" integer,
-  "discount_pct" integer
+  "end_date" date NOT NULL CHECK ("end_date" > "start_date"),
+  "discount_flat" integer CHECK ("discount_flat" >= 0),
+  "discount_pct" integer CHECK ("discount_pct" BETWEEN 0 AND 100)
 );
 
 CREATE TABLE "addresses" (
@@ -78,7 +79,7 @@ CREATE TABLE "addresses" (
   "city" text NOT NULL,
   "street" text NOT NULL,
   "zip_code" text NOT NULL,
-  "house_number" integer NOT NULL,
+  "house_number" integer NOT NULL CHECK ("house_number" > 0),
   "country_id" integer NOT NULL
 );
 
@@ -91,8 +92,9 @@ CREATE TABLE "reviews" (
   "id" SERIAL PRIMARY KEY,
   "username" text NOT NULL,
   "hotel_id" integer NOT NULL,
-  "rating" integer NOT NULL,
-  "review_text" text NOT NULL
+  "rating" integer NOT NULL CHECK ("rating" BETWEEN 1 AND 5),
+  "review_text" text NOT NULL,
+  "upload_date" date NOT NULL
 );
 
 CREATE TABLE "payments" (
@@ -108,38 +110,41 @@ CREATE TABLE "avg_price_history" (
   "id" SERIAL PRIMARY KEY,
   "hotel_id" integer NOT NULL,
   "period_start" date NOT NULL,
-  "period_end" date NOT NULL,
-  "avg_price" integer NOT NULL
+  "period_end" date NOT NULL CHECK ("period_end" > "period_start"),
+  "avg_price" integer NOT NULL CHECK ("avg_price" >= 0)
 );
 
 CREATE TABLE "vacancy_history" (
   "id" SERIAL PRIMARY KEY,
   "hotel_id" integer NOT NULL,
   "period_start" date NOT NULL,
-  "period_end" date NOT NULL,
+  "period_end" date NOT NULL CHECK ("period_end" > "period_start"),
   "vacancies" integer NOT NULL
 );
 
 CREATE TABLE "hotel_ratings" (
   "hotel_id" integer PRIMARY KEY,
-  "current_rating" numeric(3, 2) NOT NULL
+  "current_rating" numeric(3, 2) NOT NULL,
+  "review_count" integer NOT NULL DEFAULT 0 CHECK ("review_count" >= 0)
 );
 
 CREATE TABLE "reservation_addons" (
   "id" integer PRIMARY KEY,
   "name" text,
-  "price" integer
-);
-
-CREATE TABLE "hotel_to_addon" (
-  "hotel_id" integer NOT NULL,
-  "addon_id" integer NOT NULL
+  "price" integer CHECK ("price" >= 0),
+  "hotel_id" integer NOT NULL
 );
 
 CREATE TABLE "reservation_rooms" (
   "reservation_id" integer,
   "room_id" integer,
   PRIMARY KEY ("reservation_id", "room_id")
+);
+
+CREATE TABLE "reservation_add_ons" (
+  "reservation_id" integer NOT NULL,
+  "addon_id" integer NOT NULL,
+  PRIMARY KEY ("reservation_id", "addon_id")
 );
 
 
@@ -173,12 +178,12 @@ ALTER TABLE "vacancy_history" ADD FOREIGN KEY ("hotel_id") REFERENCES "hotels" (
 
 ALTER TABLE "hotel_ratings" ADD FOREIGN KEY ("hotel_id") REFERENCES "hotels" ("id") ON DELETE CASCADE;
 
-ALTER TABLE "hotel_to_addon" ADD FOREIGN KEY ("hotel_id") REFERENCES "hotels" ("id") ON DELETE CASCADE;
-
-ALTER TABLE "hotel_to_addon" ADD FOREIGN KEY ("addon_id") REFERENCES "reservation_addons" ("id") ON DELETE CASCADE;
-
 ALTER TABLE "room_ammount" ADD FOREIGN KEY ("hotel_id") REFERENCES "hotels" ("id") ON DELETE CASCADE;
 
 ALTER TABLE "room_ammount" ADD FOREIGN KEY ("room_id") REFERENCES "rooms" ("id") ON DELETE CASCADE;
 
 ALTER TABLE "reservation_rooms" ADD FOREIGN KEY ("reservation_id") REFERENCES "reservations" ("id") ON DELETE CASCADE;
+
+ALTER TABLE "reservation_add_ons" ADD FOREIGN KEY ("reservation_id") REFERENCES "reservations" ("id") ON DELETE CASCADE;
+
+ALTER TABLE "reservation_add_ons" ADD FOREIGN KEY ("addon_id") REFERENCES "reservation_addons" ("id") ON DELETE CASCADE;

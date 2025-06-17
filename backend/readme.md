@@ -16,7 +16,7 @@ zwraca:
     {
         "id":1,
         "name":"Hotel Royal",
-        "price":"100.99",
+        "price":"350",
         "star_standard":5,
         "sigle_beds":1,
         "double_beds":1,
@@ -38,6 +38,8 @@ zwraca:
     "name":"Hotel Royal",
     "photo_url":"https://photo_site.net/photo.jpg",
     "star_standard":5,
+    "avg_rating":4.2,
+    "rating_count":2,
     "description":"Luksusowy hotel w centrum Warszawy.",
     "address":
     {
@@ -62,9 +64,11 @@ zwraca:
     "reviews":
     [
         {
+            "id":1,
             "username":"jan_kowalski",
             "review_text":"Niesamowite doświadczenie!",
-            "rating":5
+            "rating":5,
+            "upload_date":"2025-06-17"
         }
     ]
 }
@@ -80,13 +84,19 @@ przykładowe dane w zapytaniu:
     "hotel_id":1, 
     "start_date":"2025-05-24", 
     "end_date":"2025-05-26", 
+    "addons" : [ 1, 2 ],
     "customer":
     {
         "name": "Andrzej",
         "surname": "Andrzejowski",
         "phone_number": "999999999"
     }, 
-    "payment_info_id": 1
+    "payment_info":
+    {
+        "payment_type": "przelew",
+        "payment_data": "20923423409234234234",
+        "amount": 330
+    }
 }
 ```
 
@@ -102,6 +112,79 @@ przykładowe dane w zapytaniu:
     "hotel_id": 1,
     "username": "user1",
     "review_text": "super hotel polecam gorąco.",
-    "rating": 4
+    "rating": 4,
 }
+```
+
+------------------------
+
+### 5. GET: /get/reservations?name=[name]&surname=[surname]&phone_number=[phone_number]
+
+przykładowe zapytanie:
+`localhost:3000/get/reservations?name=Jan&surname=Kowalski&phone_number=123456789`
+
+odpowiedź:
+
+```json
+[
+    {
+        "hotel_id":1,
+        "room_id":1,
+        "start_date":"2025-05-01",
+        "end_date":"2025-05-05"
+    }
+]
+
+```
+
+--------------------
+
+### 6. /get/configuration?hotel_id=[id]&guests=[guests]
+
+przykładowe zapytanie:
+`localhost:3000/get/configuration?hotel_id=1&guests=2`
+
+odpowiedź:
+
+```json
+[
+    {
+        "single_beds":1,
+        "double_beds":1,
+        "price":350
+    },
+    {
+        "single_beds":2,
+        "double_beds":0,
+        "price":280
+    }
+]
+```
+
+--------------------------
+
+### 7. /get/addons?hotel_id=[id]
+
+przykładowe zapytanie:
+`localhost:3000/get/addons?hotel_id=1`
+
+odpowiedź:
+```json
+[
+    {
+        "id":1,
+        "name":"Śniadanie",
+        "price":45
+    },
+    {
+        "id":3,
+        "name":"Dostęp do SPA",
+        "price":80
+    },
+    {
+        "id":5,
+        "name":"Wi-Fi Premium",
+        "price":15
+    }
+]
 ```
