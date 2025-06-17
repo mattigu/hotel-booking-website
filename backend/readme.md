@@ -108,6 +108,7 @@ przykładowe dane w zapytaniu:
     "hotel_id": 1,
     "username": "user1",
     "review_text": "super hotel polecam gorąco.",
-    "rating": 4
+    "rating": 4,
+    "upload_date": "2025-05-24"
 }
 ```
