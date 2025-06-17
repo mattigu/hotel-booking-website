@@ -25,13 +25,26 @@ type HotelSearchQueryDetails struct {
 	Guests		int
 }
 
+type RoomConfiguration struct {
+	SingleBeds int	`json:"single_beds"`
+	DoubleBeds int	`json:"double_beds"`
+}
+
+type Addons struct {
+	Name string `json:"name"`
+	Price string `json:"price"`
+}
+
 type HotelSpecificData struct {
 	Id   			int  		`json:"id"`
 	Name 			string 		`json:"name"`
 	PhotoUrl		string		`json:"photo_url"`
 	StarStandard 	int  		`json:"star_standard"`
+	AvgRating	 	int  		`json:"avg_rating"`
 	Description  	string 		`json:"description"`
 	Address 		AddressData	`json:"address"`
 	Amenities 		[]Amenities	`json:"amenities"`
 	Reviews 		[]ReviewData `json:"reviews"`
+	RoomConfigurations []RoomConfiguration `json:"room_configurations"`
+	Addons			[]Addons	`json:"addons"`
 }

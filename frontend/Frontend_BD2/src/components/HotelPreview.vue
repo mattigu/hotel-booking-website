@@ -10,20 +10,24 @@ const props = defineProps({
 })
 
 // For now only these since the request is about to change anyway
-const { id, name, star_standard, photo_url } = props.hotel
+const { id, name, star_standard, single_beds, double_beds, photo_url } = props.hotel
 
 </script>
 <template>
   <div class="hotel">
     <div class="preview_img">
-      <img :src="photo_url" onerror="this.onerror=null;src=`https://u.profitroom.com/2018-focushotels-pl/thumb/1920x1080/uploads/DJI_0372_MID.jpg`">
+      <img :src="photo_url" onerror="this.onerror=null;this.src=`https://u.profitroom.com/2018-focushotels-pl/thumb/1920x1080/uploads/DJI_0372_MID.jpg`">
     </div>
-    <div class="preview_text">
-      <h1> {{ name }} HOTEL ID: {{ id }} </h1>
-      <vue3StarRatings
-        v-model="star_standard"
-        :disable-click="true"
-      />
+    <div class="preview_info">
+      <span>
+        <vue3StarRatings
+          v-model="star_standard"
+          :disable-click="true"
+        />
+      </span>
+	  
+      <h1> name </h1>
+
       <RouterLink :id="id" :to="`/hotel/${ id }`">Check availability</RouterLink>
     </div>
   </div>
@@ -44,7 +48,7 @@ const { id, name, star_standard, photo_url } = props.hotel
 	aspect-ratio: 1;
 }
 
-.preview_img {
+.preview_info {
 	margin: 2%;
 }
 

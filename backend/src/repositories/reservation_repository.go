@@ -8,6 +8,7 @@ import (
 	"os"
 	"github.com/jackc/pgx/v5"
 //	"strconv"
+//	"strconv"
 )
 
 type ReservationRepository struct{
@@ -59,7 +60,7 @@ func (repository *ReservationRepository) addUser(user *schemas.UserData) error{
 	return nil
 }
 
-func (repository * ReservationRepository) addUserIfAbsent(user *schemas.UserData) int{
+func (repository *ReservationRepository) addUserIfAbsent(user *schemas.UserData) int{
 	userId, _ := repository.getUserId(user)
 	if(userId == -1){
 		repository.addUser(user);
@@ -68,8 +69,33 @@ func (repository * ReservationRepository) addUserIfAbsent(user *schemas.UserData
 	return userId;
 }
 
+func (repository *ReservationRepository) addPaymentInfo (paymentInfo *schemas.PaymentInfo) int {
+	query := `INSERT INTO payments ("id", "payment_type", "payment_data", "due_date", "amount", "fulfilled")
+	VALUES((SELECT max(id) + 1 FROM payments), '`+paymentInfo.PaymentType+`', '`+paymentInfo.PaymentData+`', '1970-01-01', '` + paymentInfo.Amount+`', true)
+	RETURNING id;`
+
+	rows, err := repository.Db.Pool().Query(context.Background(), query)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Can't retrieve rows from db %v\n", err)
+		os.Exit(1)
+	}
+	defer rows.Close()
+
+	var paymentId int;
+	for rows.Next(){
+		err := rows.Scan(
+			&paymentId,
+		)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error scanning rows %v\n", err)
+		}
+	}
+	return paymentId;
+}
+
 func (repository *ReservationRepository) ReserveRoom(reservationData *schemas.Reservation) error{
 	userId := repository.addUserIfAbsent(&reservationData.Customer)
+	paymentId := repository.addPaymentInfo(&reservationData.PaymentId)
 
 	query := `INSERT INTO reservations ("id", "customer_id", "hotel_id", "room_id", "start_date", "end_date", "payment_info_id") 
 		VALUES ((SELECT max(id) + 1 FROM reservations), @customerId, @hotelId, @roomId, @startDate, @endDate, @paymentInfoId)`
@@ -80,7 +106,7 @@ func (repository *ReservationRepository) ReserveRoom(reservationData *schemas.Re
 		"roomId": reservationData.RoomId,
 		"startDate": reservationData.StartDate,
 		"endDate": reservationData.EndDate,
-		"paymentInfoId": reservationData.PaymentId,
+		"paymentInfoId": paymentId,
 	}
 
 	repository.Db.Pool().Query(context.Background(), query, args)

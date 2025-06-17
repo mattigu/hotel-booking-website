@@ -19,8 +19,8 @@ func (hotelService *HotelService) GetAll() ([]schemas.Hotel, error) {
 	return hotelService.repository.GetAll()
 }
 
-func (hotelService *HotelService) GetById(id int) (schemas.HotelSpecificData, error) {
-	return hotelService.repository.GetById(id)
+func (hotelService *HotelService) GetById(id int, guests int) (schemas.HotelSpecificData, error) {
+	return hotelService.repository.GetById(id, guests)
 }
 
 func (hotelService *HotelService) GetHotelsSearchQuery(searchQuery *schemas.HotelSearchQueryDetails) ([]schemas.HotelInfo, error) {

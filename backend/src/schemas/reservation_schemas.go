@@ -6,5 +6,5 @@ type Reservation struct{
 	StartDate	string	`json:"start_date"`
 	EndDate 	string	`json:"end_date"`
 	Customer 	UserData `json:"customer"`
-	PaymentId 	int		`json:"payment_info_id"`
+	PaymentId 	PaymentInfo `json:"payment_info"`
 }

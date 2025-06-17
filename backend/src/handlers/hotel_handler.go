@@ -31,11 +31,16 @@ func (hotelHandler *HotelHandler) GetAll(responseWriter http.ResponseWriter, req
 
 func (hotelHandler *HotelHandler) GetById(responseWriter http.ResponseWriter, req *http.Request) error {
 	id := req.PathValue("id")
+	guests, err := strconv.Atoi(req.URL.Query().Get("guests"))
+	if(err != nil){
+		return app_err.WithHTTPStatus(err, http.StatusBadRequest)
+	}
+
 	i, err := strconv.Atoi(id)
 	if err != nil {
 		return app_err.WithHTTPStatus(err, http.StatusBadRequest)
 	}
-	hotels, err := hotelHandler.service.GetById(int(i))
+	hotels, err := hotelHandler.service.GetById(int(i), guests)
 	if err != nil {
 		return app_err.WithHTTPStatus(err, http.StatusBadRequest)
 	}
