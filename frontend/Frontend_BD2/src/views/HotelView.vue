@@ -21,7 +21,7 @@ function addReviewToHotel(newReview) {
 }
 
 async function loadHotel() {
-	const request = new Request(`${API_URL}/get/hotel/${props.id}`, { method: 'GET' })
+	const request = new Request(`${API_URL}/get/hotel/${props.id}?guests=${1}`, { method: 'GET' })
 	const { data, execute } = useFetch(request)
 	await execute()
 	hotel.value = data.value
