@@ -90,10 +90,10 @@ INSERT INTO "promotions" ("hotel_id", "start_date", "end_date", "discount_flat",
 (2, '2025-05-15', '2025-05-20', 100, NULL);
 
 -- Dane dla tabeli reviews
-INSERT INTO "reviews" ("username", "hotel_id", "rating", "review_text") VALUES
-('jan_kowalski', 1, 5, 'Niesamowite doświadczenie!'),
-('anna_nowak', 2, 4, 'Bardzo wygodny pobyt.'),
-('piotr_wisniewski', 3, 3, 'Dobrze, ale mogło być lepiej.');
+INSERT INTO "reviews" ("username", "hotel_id", "rating", "review_text", "upload_date") VALUES
+('jan_kowalski', 1, 5, 'Niesamowite doświadczenie!', '2025-05-01'),
+('anna_nowak', 2, 4, 'Bardzo wygodny pobyt.', '2025-05-01'),
+('piotr_wisniewski', 3, 3, 'Dobrze, ale mogło być lepiej.', '2025-05-01');
 
 -- Dane dla tabeli avg_price_history
 INSERT INTO "avg_price_history" ("hotel_id", "period_start", "period_end", "avg_price") VALUES

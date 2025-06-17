@@ -18,3 +18,7 @@ func NewReservationService(db *database.Database) *ReservationService {
 func (reservationService *ReservationService) ReserveRoom(reservationData *schemas.Reservation) error {
 	return reservationService.repository.ReserveRoom(reservationData)
 }
+
+func (service *ReservationService) GetReservationsForUser(user *schemas.UserData) []schemas.ReservationDetails{
+	return service.repository.GetReservationsForUser(user)
+}

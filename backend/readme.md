@@ -38,6 +38,7 @@ zwraca:
     "name":"Hotel Royal",
     "photo_url":"https://photo_site.net/photo.jpg",
     "star_standard":5,
+    "avg_rating":0,
     "description":"Luksusowy hotel w centrum Warszawy.",
     "address":
     {
@@ -86,7 +87,12 @@ przykładowe dane w zapytaniu:
         "surname": "Andrzejowski",
         "phone_number": "999999999"
     }, 
-    "payment_info_id": 1
+    "payment_info":
+    {
+        "payment_type": "przelew",
+        "payment_data": "20923423409234234234",
+        "amount": "330.72"
+    }
 }
 ```
 
@@ -102,6 +108,28 @@ przykładowe dane w zapytaniu:
     "hotel_id": 1,
     "username": "user1",
     "review_text": "super hotel polecam gorąco.",
-    "rating": 4
+    "rating": 4,
+    "upload_date": "2025-05-24"
 }
+```
+
+------------------------
+
+### 5. GET: /get/reservations?name=[name]&surname=[surname]&phone_number=[phone_number]
+
+przykładowe zapytanie:
+`localhost:3000/get/reservations?name=Jan&surname=Kowalski&phone_number=123456789`
+
+odpowiedź:
+
+```json
+[
+    {
+        "hotel_id":1,
+        "room_id":1,
+        "start_date":"2025-05-01",
+        "end_date":"2025-05-05"
+    }
+]
+
 ```

@@ -70,7 +70,7 @@ func (repository *HotelRepository) getAmenitiesFor(id int) []schemas.Amenities{
 }
 
 func (repository *HotelRepository) getSomeReviewsFor(id int) []schemas.ReviewData{
-	query := `SELECT username, rating, review_text 
+	query := `SELECT username, rating, review_text, upload_date::text
 	FROM reviews
 	WHERE hotel_id=@id
 	fetch first 10 rows only`
@@ -92,6 +92,7 @@ func (repository *HotelRepository) getSomeReviewsFor(id int) []schemas.ReviewDat
 			&review.Username,
 			&review.Rating,
 			&review.ReviewText,
+			&review.UploadDate,
 		)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error scanning rows %v\n", err)
