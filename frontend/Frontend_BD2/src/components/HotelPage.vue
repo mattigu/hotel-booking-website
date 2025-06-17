@@ -54,7 +54,7 @@ const {street, city, house_number, country} = address
     <div class="review_grid">
       <template
         v-for="review in hotel.reviews"
-        :key="review.username"
+        :key="review.id"
       >
         <ReviewBox :review="review" />
       </template>
