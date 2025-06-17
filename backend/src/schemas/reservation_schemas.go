@@ -7,6 +7,7 @@ type Reservation struct{
 	EndDate 	string	`json:"end_date"`
 	Customer 	UserData `json:"customer"`
 	PaymentId 	PaymentInfo `json:"payment_info"`
+	Addons	 	[]int 	`json:"addons"`
 }
 
 type ReservationDetails struct{
