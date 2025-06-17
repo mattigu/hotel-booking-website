@@ -8,6 +8,7 @@ type NewReview struct {
 }
 
 type ReviewData struct {
+	Id			int 	`json:"id"`
 	Username 	string 	`json:"username"`
 	ReviewText 	string 	`json:"review_text"`
 	Rating 		int 	`json:"rating"`
