@@ -191,11 +191,11 @@ func (repository *HotelRepository) GetById(id int, guests int) (schemas.HotelSpe
 }
 
 func (hotelRepository *HotelRepository) GetHotelsSearchQuery(searchQuery *schemas.HotelSearchQueryDetails) ([]schemas.HotelInfo, error){
-	query := `SELECT h.id, h.name, h.star_standard, r.single_bed_num, r.double_bed_num
+	query := `SELECT DISTINCT on (h.id) h.id, h.name, h.star_standard, r.single_bed_num, r.double_bed_num
 		FROM hotels h 
 			INNER JOIN addresses a on a.id=h.address_id
 			INNER JOIN rooms r on r.hotel_id=h.id
-		WHERE a.city like @city AND r.single_bed_num + r.double_bed_num * 2 = @guests;`
+		WHERE a.city like @city AND r.single_bed_num + r.double_bed_num * 2 >= @guests;`
 	
 	args := pgx.NamedArgs{
 		"city": searchQuery.City,
@@ -237,4 +237,8 @@ func (repository *HotelRepository) GetRoomConfigurations(hotelId int, guests int
 	roomConfiguration = repository.getRoomsForGuests(hotelId, guests)
 
 	return roomConfiguration, nil
+}
+
+func (repository *HotelRepository) GetRoomData(hotelId int, roomId int) {
+
 }
