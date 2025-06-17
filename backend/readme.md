@@ -112,3 +112,24 @@ przykładowe dane w zapytaniu:
     "upload_date": "2025-05-24"
 }
 ```
+
+------------------------
+
+### 5. GET: /get/reservations?name=[name]&surname=[surname]&phone_number=[phone_number]
+
+przykładowe zapytanie:
+`localhost:3000/get/reservations?name=Jan&surname=Kowalski&phone_number=123456789`
+
+odpowiedź:
+
+```json
+[
+    {
+        "hotel_id":1,
+        "room_id":1,
+        "start_date":"2025-05-01",
+        "end_date":"2025-05-05"
+    }
+]
+
+```

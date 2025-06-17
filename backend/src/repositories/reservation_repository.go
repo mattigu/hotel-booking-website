@@ -112,3 +112,37 @@ func (repository *ReservationRepository) ReserveRoom(reservationData *schemas.Re
 
 	return nil
 }
+
+func (repository *ReservationRepository) GetReservationsForUser(user *schemas.UserData) []schemas.ReservationDetails{
+	user_id, _ := repository.getUserId(user)
+	query := `SELECT hotel_id, room_id, start_date::text, end_date::text
+	FROM reservations
+	WHERE customer_id=@id`
+
+	args := pgx.NamedArgs{
+		"id": user_id,
+	}
+
+	rows, err := repository.Db.Pool().Query(context.Background(), query, args)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Can't retrieve rows from db %v\n", err)
+		os.Exit(1)
+	}
+	defer rows.Close()
+
+	var reservations []schemas.ReservationDetails
+	for rows.Next() {
+		var reservation schemas.ReservationDetails
+		err := rows.Scan(
+			&reservation.HotelId,
+			&reservation.RoomId,
+			&reservation.StartDate,
+			&reservation.EndDate,
+		)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error scanning rows %v\n", err)
+		}
+		reservations = append(reservations, reservation)
+	}
+	return reservations
+}

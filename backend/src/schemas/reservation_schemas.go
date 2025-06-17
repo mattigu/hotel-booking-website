@@ -8,3 +8,10 @@ type Reservation struct{
 	Customer 	UserData `json:"customer"`
 	PaymentId 	PaymentInfo `json:"payment_info"`
 }
+
+type ReservationDetails struct{
+	HotelId		int		`json:"hotel_id"`
+	RoomId		int		`json:"room_id"`
+	StartDate	string	`json:"start_date"`
+	EndDate 	string	`json:"end_date"`
+}
