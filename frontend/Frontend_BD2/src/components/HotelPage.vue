@@ -1,5 +1,7 @@
 <script setup>
 import vue3StarRatings from "vue3-star-ratings"
+import ReviewForm from '@/components/ReviewForm.vue'
+import ReviewBox from '@/components/ReviewBox.vue'
 
 const props = defineProps({
 	hotel: {
@@ -8,7 +10,11 @@ const props = defineProps({
 	}
 })
 
-const {name, description, star_standard, address, amenities, photo_url} = props.hotel
+function addReviewToHotel(newReview) {
+	reviews.unshift(newReview)
+}
+
+const {name, description, star_standard, address, amenities, photo_url, reviews} = props.hotel
 const {street, city, house_number, country} = address
 </script>
 <template>
@@ -39,6 +45,21 @@ const {street, city, house_number, country} = address
     <h3>{{ amenity.name }}</h3>
     <p>{{ amenity.description }}</p>
   </template>
+
+  <div class="reviews" v-if="hotel">
+    <hr>
+    <h2>Reviews</h2>
+    <ReviewForm @review_posted="addReviewToHotel" />
+
+    <template
+      v-for="review in hotel.reviews"
+      :key="review.username"
+    >
+      <!-- Use a better key for this loop later -->
+
+      <ReviewBox :review="review" />
+    </template>
+  </div>
 </template>
 
 <style>
