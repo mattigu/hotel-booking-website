@@ -1,17 +1,24 @@
 import { createWebHistory, createRouter } from 'vue-router'
 
-import HotelBrowse from '@/views/HotelBrowseView.vue'
 import HotelView from '@/views/HotelView.vue'
+import HotelBrowseView from '@/views/HotelBrowseView.vue'
 
 const routes = [
-  { path: '/', component: HotelBrowse },
-  { path: '/hotel/:id', component: HotelView, props: true },
+	{ path: '/', name:"HotelBrowseView" ,component: HotelBrowseView },
+	{ path: '/hotel/:id', name:"HotelView", component: HotelView, props: true },
 // Components can be lazy loaded as well, it might be useful later
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
-  routes,
+	scrollBehavior(_to, _from, savedPosition) {
+		if (savedPosition) {
+			return savedPosition
+		} else {
+			return { top: 0 }
+		}
+	},
+	history: createWebHistory(),
+	routes,
 })
 
 export default router

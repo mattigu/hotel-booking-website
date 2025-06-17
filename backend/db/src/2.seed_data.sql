@@ -78,10 +78,10 @@ INSERT INTO "payments" ("id", "payment_type", "due_date", "amount", "fulfilled")
 (3, 'PayPal', '2025-05-20', 1800, false);
 
 -- Dane dla tabeli reservations
-INSERT INTO "reservations" ("id", "customer_id", "hotel_id", "room_ids", "start_date", "end_date", "payment_info_id") VALUES
-(1, 1, 1, ARRAY[1], '2025-05-01', '2025-05-05', 1),
-(2, 2, 2, ARRAY[1, 2], '2025-05-8', '2025-05-15', 2),
-(3, 3, 3, ARRAY[3], '2025-05-20', '2025-05-25', 3);
+INSERT INTO "reservations" ("id", "customer_id", "hotel_id", "room_id", "start_date", "end_date", "payment_info_id") VALUES
+(1, 1, 1, 1, '2025-05-01', '2025-05-05', 1),
+(2, 2, 2, 2, '2025-05-8', '2025-05-15', 2),
+(3, 3, 3, 3, '2025-05-20', '2025-05-25', 3);
 
 
 -- Dane dla tabeli promotions
@@ -105,6 +105,3 @@ INSERT INTO "vacancy_history" ("hotel_id", "period_start", "period_end", "vacanc
 (1, '2024-01-01', '2024-06-30', 20),
 (2, '2024-01-01', '2024-06-30', 15);
 
-
--- Testowe dane
-insert into teststruct(name) values ('jajo');

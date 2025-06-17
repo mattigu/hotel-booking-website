@@ -1,77 +1,54 @@
 <script setup>
-import { ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { inject, ref } from 'vue'
+import { useFetch } from '@/composables/useFetch'
 
+import ReviewForm from '@/components/ReviewForm.vue'
+import ReviewBox from '@/components/ReviewBox.vue'
+import HotelPage from '@/components/HotelPage.vue'
+
+const API_URL = inject('API_URL')
 // View that displays a detailed Hotel page.
 
-// const props = defineProps({
-// 	id: {
-// 		type: String,
-// 		required: true
-// 	}
-// })
-
-async function getHotel(id) {
-	const request = new Request(`http://localhost:3000/hotels/getbyid?id=${ id }`, {
-		method: "GET",
-	});
-
-	try {
-		const response = await fetch(request)
-		if (!response.ok) {
-			throw new Error(`Failed to get response`);}
-		let hotel = await response.json();
-		return hotel
-	} catch (error) {
-		console.error(error.message);
-		alert("Failed")
-		return;
+const props = defineProps({
+	id: {
+		type: String,
+		required: true
 	}
+})
+
+function addReviewToHotel(newReview) {
+	hotel.value.reviews.unshift(newReview)
 }
 
-async function fetchData(id) {
-	console.log(id)
-	error.value = hotel.value = null
-	loading.value = true
-
-	try {
-		hotel.value = await getHotel(id)
-	} catch (err) {
-		error.value = err.toString()
-	} finally {
-		loading.value = false
-	}
+async function loadHotel() {
+	const request = new Request(`${API_URL}/get/hotel/${props.id}`, { method: 'GET' })
+	const { data, execute } = useFetch(request)
+	await execute()
+	hotel.value = data.value
 }
 
-const loading = ref(false)
-const hotel = ref(null)
-const error = ref(null)
-
-const route = useRoute()
-
-watch(() => route.params.id, fetchData, { immediate: true })
-
-// const loadHotel = async () => {hotel.value = await getHotel();}
-// loadHotel(props.id)
+const hotel = ref()
+loadHotel()
 
 </script>
+
 <template>
-  <div
-    v-if="loading"
-    class="loading">
-    Loading...
+  <div v-if="hotel" class="hotel_view">
+    <HotelPage :hotel="hotel" />
   </div>
 
-  <div
-    v-if="error"
-    class="error">
-    {{ error }}
-  </div>
+  <div class="reviews" v-if="hotel">
+    <hr>
+    <h2>Reviews</h2>
+    <ReviewForm @review_posted="addReviewToHotel" />
 
-  <div
-    v-if="hotel"
-    class="content">
-    <h2>Hello from {{ hotel.name }} page id = {{ hotel.id }}</h2>
-    <p>{{ hotel.description }}</p>
+    <template
+      v-for="review in hotel.reviews"
+      :key="review.username"
+    >
+      <!-- Use a better key for this loop later -->
+
+      <ReviewBox :review="review" />
+    </template>
   </div>
 </template>

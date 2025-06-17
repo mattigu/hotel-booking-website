@@ -34,7 +34,10 @@ przykładowe zapytanie:
 zwraca:
 ```json
 {
+    "id":1,
+    "name":"Hotel Royal",
     "photo_url":"https://photo_site.net/photo.jpg",
+    "star_standard":5,
     "description":"Luksusowy hotel w centrum Warszawy.",
     "address":
     {
@@ -73,11 +76,16 @@ zwraca:
 przykładowe dane w zapytaniu:
 ```json
 {
+    "room_id": 2, 
     "hotel_id":1, 
-    "room_id": 1, 
     "start_date":"2025-05-24", 
     "end_date":"2025-05-26", 
-    "customer_id": 1, 
+    "customer":
+    {
+        "name": "Andrzej",
+        "surname": "Andrzejowski",
+        "phone_number": "999999999"
+    }, 
     "payment_info_id": 1
 }
 ```

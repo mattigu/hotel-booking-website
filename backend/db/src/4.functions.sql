@@ -31,3 +31,27 @@ BEGIN
     RETURN vacancy_rate;
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE function add_new_user(
+    name text,
+    surname text,
+    phone_number text
+) RETURNS boolean as $$
+DECLARE
+    found_customer INTEGER;
+BEGIN
+    SELECT COUNT(*)
+    INTO found_customer
+    FROM customers c
+    WHERE c.name == name
+    AND c.surname == surname
+    AND c.phone_number == phone_number;
+        IF found_customer = 0 THEN
+        INSERT INTO customers VALUES (
+            name, surname, phone_number
+        );
+        RETURN 1;
+    END IF;
+    RETURN 0;
+END;
+$$ LANGUAGE plpgsql;

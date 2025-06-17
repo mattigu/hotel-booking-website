@@ -1,17 +1,17 @@
 package main
 
 import (
-//	"bd2_projekt/app_err"
-//	"bd2_projekt/database"
+	//	"bd2_projekt/app_err"
+	//	"bd2_projekt/database"
 	"bd2_projekt/handlers"
-//	"context"
-//	"encoding/json"
-//	"fmt"
+	//	"context"
+	//	"encoding/json"
+	//	"fmt"
 	"net/http"
-//	"os"
+	//	"os"
 
 	"github.com/joho/godotenv"
-//	"github.com/jackc/pgx/v5"
+	// "github.com/jackc/pgx/v5"
 )
 
 func main() {
@@ -19,13 +19,15 @@ func main() {
 	godotenv.Load(".env")
 
 	// connecting to the database
-	db := connectToDatabase();
+	db := connectToDatabase()
 	println("connected to database")
-	
+
 	// creating all the handlers
 	hotelHandler := handlers.NewHotelHandler(db)
 	reservationHandler := handlers.NewReservationHandler(db)
 	reviewHandler := handlers.NewReviewHandler(db)
+
+	http.HandleFunc("OPTIONS /", CORS(func(w http.ResponseWriter, r *http.Request) {}))
 
 	// create all get endpoints
 	http.HandleFunc("GET /get/hotels", CORS(errorHandler(hotelHandler.GetHotelsSearchQuery)))

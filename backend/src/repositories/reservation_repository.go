@@ -6,7 +6,10 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"fmt"
+	"os"
 	"github.com/jackc/pgx/v5"
+//	"strconv"
 //	"strconv"
 )
 
@@ -101,13 +104,16 @@ func (repository *ReservationRepository) ReserveRoom(reservationData *schemas.Re
 
 	args := pgx.NamedArgs{
 		"customerId": userId,
+		"customerId": userId,
 		"hotelId": reservationData.HotelId,
+		"roomId": reservationData.RoomId,
 		"roomId": reservationData.RoomId,
 		"startDate": reservationData.StartDate,
 		"endDate": reservationData.EndDate,
 		"paymentInfoId": paymentId,
 	}
 
+	repository.Db.Pool().Query(context.Background(), query, args)
 	repository.Db.Pool().Query(context.Background(), query, args)
 
 	return nil
