@@ -38,6 +38,7 @@ zwraca:
     "name":"Hotel Royal",
     "photo_url":"https://photo_site.net/photo.jpg",
     "star_standard":5,
+    "avg_rating":0,
     "description":"Luksusowy hotel w centrum Warszawy.",
     "address":
     {
@@ -86,7 +87,12 @@ przykładowe dane w zapytaniu:
         "surname": "Andrzejowski",
         "phone_number": "999999999"
     }, 
-    "payment_info_id": 1
+    "payment_info":
+    {
+        "payment_type": "przelew",
+        "payment_data": "20923423409234234234",
+        "amount": "330.72"
+    }
 }
 ```
 

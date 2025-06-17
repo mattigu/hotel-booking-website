@@ -92,7 +92,8 @@ CREATE TABLE "reviews" (
   "username" text NOT NULL,
   "hotel_id" integer NOT NULL,
   "rating" integer NOT NULL,
-  "review_text" text NOT NULL
+  "review_text" text NOT NULL,
+  "upload_date" date
 );
 
 CREATE TABLE "payments" (
