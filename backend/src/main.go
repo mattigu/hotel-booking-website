@@ -34,6 +34,7 @@ func main() {
 	http.HandleFunc("GET /get/hotel/{id}", CORS(errorHandler(hotelHandler.GetById)))
 	http.HandleFunc("GET /hotels/getall", CORS(errorHandler(hotelHandler.GetAll)))
 	http.HandleFunc("GET /get/reservations", CORS(errorHandler(reservationHandler.GetReservationsFor)))
+	http.HandleFunc("GET /get/addons", CORS(errorHandler(hotelHandler.GetAddons)))
 	http.HandleFunc("GET /get/configuration", CORS(errorHandler(hotelHandler.GetRoomConfigurations)))
 
 	// create all post endpoints

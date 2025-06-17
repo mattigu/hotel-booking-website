@@ -55,3 +55,27 @@ BEGIN
     RETURN 0;
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION is_room_available(
+    room_id_input INTEGER,
+    start_date_input DATE,
+    end_date_input DATE
+) RETURNS BOOLEAN AS $$
+DECLARE
+    conflicting_reservations INTEGER;
+BEGIN
+    SELECT COUNT(*)
+    INTO conflicting_reservations
+    FROM reservation_rooms rr
+    JOIN reservations r ON rr.reservation_id = r.id
+    WHERE rr.room_id = room_id_input
+      AND r.start_date < end_date_input
+      AND r.end_date > start_date_input;
+    
+    IF conflicting_reservations > 0 THEN
+        RETURN FALSE;
+    ELSE
+        RETURN TRUE;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;

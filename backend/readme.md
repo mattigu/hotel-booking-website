@@ -38,7 +38,7 @@ zwraca:
     "name":"Hotel Royal",
     "photo_url":"https://photo_site.net/photo.jpg",
     "star_standard":5,
-    "avg_rating":0,
+    "avg_rating":4.2,
     "description":"Luksusowy hotel w centrum Warszawy.",
     "address":
     {
@@ -109,7 +109,6 @@ przykładowe dane w zapytaniu:
     "username": "user1",
     "review_text": "super hotel polecam gorąco.",
     "rating": 4,
-    "upload_date": "2025-05-24"
 }
 ```
 
@@ -147,11 +146,31 @@ odpowiedź:
 [
     {
         "single_beds":1,
-        "double_beds":1
+        "double_beds":1,
+        "price":350
     },
     {
         "single_beds":2,
-        "double_beds":0
+        "double_beds":0,
+        "price":280
+    }
+]
+```
+
+--------------------------
+
+### 7. /get/addons?hotel_id=[id]
+
+przykładowe zapytanie:
+`localhost:3000/get/addons?hotel_id=1`
+
+odpowiedź:
+```json
+[
+    {
+        "id":1,
+        "name":"addon1",
+        "price":100
     }
 ]
 ```

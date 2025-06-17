@@ -24,7 +24,8 @@ CREATE TABLE "rooms" (
   "hotel_id" integer NOT NULL,
   "room_number" integer NOT NULL CHECK ("room_number" > 0),
   "single_bed_num" integer NOT NULL CHECK ("single_bed_num" >= 0),
-  "double_bed_num" integer NOT NULL CHECK ("double_bed_num" >= 0)
+  "double_bed_num" integer NOT NULL CHECK ("double_bed_num" >= 0),
+  "base_price" integer NOT NULL CHECK ("base_price" >= 0)
 );
 
 CREATE TABLE "room_amenities" (
@@ -123,24 +124,27 @@ CREATE TABLE "vacancy_history" (
 
 CREATE TABLE "hotel_ratings" (
   "hotel_id" integer PRIMARY KEY,
-  "current_rating" numeric(3, 2) NOT NULL
+  "current_rating" numeric(3, 2) NOT NULL,
+  "review_count" integer NOT NULL DEFAULT 0 CHECK ("review_count" >= 0)
 );
 
 CREATE TABLE "reservation_addons" (
   "id" integer PRIMARY KEY,
   "name" text,
-  "price" integer CHECK ("price" >= 0)
-);
-
-CREATE TABLE "hotel_to_addon" (
-  "hotel_id" integer NOT NULL,
-  "addon_id" integer NOT NULL
+  "price" integer CHECK ("price" >= 0),
+  "hotel_id" integer NOT NULL
 );
 
 CREATE TABLE "reservation_rooms" (
   "reservation_id" integer,
   "room_id" integer,
   PRIMARY KEY ("reservation_id", "room_id")
+);
+
+CREATE TABLE "reservation_add_ons" (
+  "reservation_id" integer NOT NULL,
+  "addon_id" integer NOT NULL,
+  PRIMARY KEY ("reservation_id", "addon_id")
 );
 
 
@@ -174,12 +178,12 @@ ALTER TABLE "vacancy_history" ADD FOREIGN KEY ("hotel_id") REFERENCES "hotels" (
 
 ALTER TABLE "hotel_ratings" ADD FOREIGN KEY ("hotel_id") REFERENCES "hotels" ("id") ON DELETE CASCADE;
 
-ALTER TABLE "hotel_to_addon" ADD FOREIGN KEY ("hotel_id") REFERENCES "hotels" ("id") ON DELETE CASCADE;
-
-ALTER TABLE "hotel_to_addon" ADD FOREIGN KEY ("addon_id") REFERENCES "reservation_addons" ("id") ON DELETE CASCADE;
-
 ALTER TABLE "room_ammount" ADD FOREIGN KEY ("hotel_id") REFERENCES "hotels" ("id") ON DELETE CASCADE;
 
 ALTER TABLE "room_ammount" ADD FOREIGN KEY ("room_id") REFERENCES "rooms" ("id") ON DELETE CASCADE;
 
 ALTER TABLE "reservation_rooms" ADD FOREIGN KEY ("reservation_id") REFERENCES "reservations" ("id") ON DELETE CASCADE;
+
+ALTER TABLE "reservation_add_ons" ADD FOREIGN KEY ("reservation_id") REFERENCES "reservations" ("id") ON DELETE CASCADE;
+
+ALTER TABLE "reservation_add_ons" ADD FOREIGN KEY ("addon_id") REFERENCES "reservation_addons" ("id") ON DELETE CASCADE;

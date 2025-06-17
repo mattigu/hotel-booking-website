@@ -5,7 +5,6 @@ type NewReview struct {
 	Username 	string 	`json:"username"`
 	ReviewText 	string 	`json:"review_text"`
 	Rating 		int 	`json:"rating"`
-	UploadDate	string	`json:"upload_date"`
 }
 
 type ReviewData struct {
