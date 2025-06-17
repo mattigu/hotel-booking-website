@@ -30,6 +30,7 @@
 	margin: auto;
 	padding-left: 5%;
 	padding-right: 5%;
+  border-radius: 10px;
 }
 
 </style>
