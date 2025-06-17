@@ -38,7 +38,7 @@ zwraca:
     "name":"Hotel Royal",
     "photo_url":"https://photo_site.net/photo.jpg",
     "star_standard":5,
-    "avg_rating":0,
+    "avg_rating":4.2,
     "description":"Luksusowy hotel w centrum Warszawy.",
     "address":
     {

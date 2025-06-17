@@ -40,7 +40,7 @@ type HotelSpecificData struct {
 	Name 			string 		`json:"name"`
 	PhotoUrl		string		`json:"photo_url"`
 	StarStandard 	int  		`json:"star_standard"`
-	AvgRating	 	int  		`json:"avg_rating"`
+	AvgRating	 	float32		`json:"avg_rating"`
 	Description  	string 		`json:"description"`
 	Address 		AddressData	`json:"address"`
 	Amenities 		[]Amenities	`json:"amenities"`

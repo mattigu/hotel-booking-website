@@ -164,6 +164,23 @@ func (hotelRepository *HotelRepository) getRoomsForGuests(hotelId int, guests in
 	return rooms
 }
 
+func (repository *HotelRepository) getAverageRating(hotelId int) (float32, error) {
+	query := `select current_rating from hotel_ratings where hotel_id=@id`
+
+	args := pgx.NamedArgs{
+		"id": hotelId,
+	}
+	var rating float32;
+	err := repository.Db.Pool().QueryRow(context.Background(), query, args).Scan(
+		&rating,
+		)
+
+	if err != nil {
+		return -1, fmt.Errorf("unable to query hotels: %w", err)
+	}
+	return rating, nil
+}
+
 func (repository *HotelRepository) GetById(id int, guests int) (schemas.HotelSpecificData, error) {
 	query := `select h.name, h.description, h.star_standard
 	from hotels h inner join addresses d on h.address_id=d.id
@@ -183,6 +200,7 @@ func (repository *HotelRepository) GetById(id int, guests int) (schemas.HotelSpe
 	hotel.Reviews = repository.getSomeReviewsFor(id)
 	hotel.Address = repository.getAddressFor(id)
 	hotel.Id = id
+	hotel.AvgRating, err = repository.getAverageRating(id)
 
 	if err != nil {
 		return schemas.HotelSpecificData{}, fmt.Errorf("unable to query hotels: %w", err)
