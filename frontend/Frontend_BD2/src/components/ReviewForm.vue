@@ -52,12 +52,15 @@ const formStars = ref(4)
       type="text"
       name="username"
       v-model="formUsername"
+      placeholder="Your name"
+      maxlength="25"
       required>
-    <label for="username">Username</label>
 
     <textarea
       name="review_text"
-      v-model="formText" />
+      v-model="formText"
+      placeholder="Write your review..."
+      rows="5" />
 
     <button type="submit">Post</button>
   </form>
@@ -66,6 +69,43 @@ const formStars = ref(4)
 <style>
 
 #review_form {
-	outline: 2px solid black;
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 20px;
+	gap: 10px;
+	padding: 12px;
+	border: 1px solid #ccc;
+	border-radius: 8px;
+	background: #fff;
+	max-width: 600px;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+#review_form input {
+	max-width: 30%;
+	padding: 4px;
+}
+
+#review_form textarea {
+	padding: 4px;
+}
+
+#review_form button {
+	padding: 8px 12px;
+	font-size: 1rem;
+	border: none;
+	border-radius: 4px;
+	background-color: rgb(00, 77, 85);
+	color: white;
+	cursor: pointer;
+}
+
+#review_form button:hover {
+  background-color: rgb(0, 54, 60);
+}
+
+#review_form button {
+	transition: background-color 0.1s ease;
 }
 </style>

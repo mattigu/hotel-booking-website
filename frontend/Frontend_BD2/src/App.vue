@@ -25,11 +25,13 @@
 .main_view {
 	background-color: white;
 	width: 70%;
-  height: 100%;
-  min-height: 100vh;
+	height: 100%;
+	min-height: 100vh;
 	margin: auto;
 	padding-left: 5%;
+	padding-bottom: 20px;
 	padding-right: 5%;
+	border-radius: 8px;
 }
 
 </style>
