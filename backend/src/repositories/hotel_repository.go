@@ -135,7 +135,7 @@ func (repository *HotelRepository) getAddressFor(id int) schemas.AddressData{
 }
 
 func (hotelRepository *HotelRepository) getRoomsForGuests(hotelId int, guests int) ([]schemas.RoomConfiguration){
-	query := `SELECT single_bed_num, double_bed_num, base_price
+	query := `SELECT id, single_bed_num, double_bed_num, base_price
 		FROM rooms
 		WHERE hotel_id=@id and single_bed_num + double_bed_num * 2 >= @guests;`
 	
@@ -153,6 +153,7 @@ func (hotelRepository *HotelRepository) getRoomsForGuests(hotelId int, guests in
 	for rows.Next() {
 		var room schemas.RoomConfiguration
 		err := rows.Scan(
+			&room.Id,
 			&room.SingleBeds,
 			&room.DoubleBeds,
 			&room.Price,
