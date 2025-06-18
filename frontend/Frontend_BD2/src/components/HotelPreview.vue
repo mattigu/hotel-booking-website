@@ -28,14 +28,23 @@ const { id, name, star_standard, sigle_beds, double_beds, photo_url, price } = p
 
       <h1> {{ name }} </h1>
 
-      <RouterLink :id="id" :to="`/hotel/${ id }`">Check availability</RouterLink>
+
+
+      <div class="room_info">
+        <li>single beds:{{ sigle_beds }}</li>
+        <li>double beds:{{ double_beds }}</li>
+      </div>
     </div>
 
-    <div class="best_offer_info">
-      <p>Best offer</p>
-      {{ price }}
-      <p>single beds:{{ sigle_beds }}</p>
-      <p>double beds:{{ double_beds }}</p>
+    <span>{{ price }}</span>
+
+    <div class="av_check">
+      <RouterLink
+        class="av_button"
+        :id="id"
+        :to="`/hotel/${ id }`">
+        Check availability
+      </RouterLink>
     </div>
   </div>
 </template>
@@ -45,9 +54,14 @@ const { id, name, star_standard, sigle_beds, double_beds, photo_url, price } = p
   border-radius: 8px;
   border: 2px solid #ddd;
 
-	width: 70%;
+	width: 60%;
 	display: flex;
   margin: auto;
+	transition: box-shadow 0.3s ease;
+}
+
+.hotel:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
 }
 
 .preview_img img {
@@ -61,6 +75,20 @@ const { id, name, star_standard, sigle_beds, double_beds, photo_url, price } = p
 
 .preview_info {
 	margin: 2%;
+  width: 50%;
 }
+
+.room_info {
+  padding-left: 15px;
+}
+
+.av_check {
+  align-self: last baseline;
+  padding-bottom: 5%;
+}
+
+/* .av_button {
+	background-color: rgb(00, 77, 85);
+} */
 
 </style>

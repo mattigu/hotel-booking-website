@@ -10,6 +10,7 @@ const API_URL = inject('API_URL')
 const searchDetails = inject('search_details') // INFO FROM SEARCH BAR
 
 const { city, startdate, enddate, guests} = searchDetails.value
+const emit = defineEmits(['reservation_confirmed'])
 
 
 const props = defineProps({
@@ -23,10 +24,54 @@ const { id: hotel_id, addons} = props.hotel
 
 const configurations = ref([])
 
+async function reserveRoom() {
+	const reservation = {
+		room_id: selectedConfiguration.value["id"],
+		hotel_id: hotel_id,
+		start_date: startdate,
+		end_date: enddate,
+		addons: selectedAddons.value.map(addon => addon.id),
+		customer: {
+			name: formName.value,
+			surname: formSurname.value,
+			phone_number: formPhone_number.value
+		},
+		payment_info: {
+			payment_type: "przelew",
+			payment_data: formPayment_data.value,
+			amount: totalPrice.value
+		}
+	}
+
+	const url = API_URL + '/reserve/room'
+	const request = new Request(url, {
+		method: "POST",
+		body: JSON.stringify(reservation),
+		headers: {
+			"Content-Type": "application/json"
+		}})
+	const { error, execute } = useFetch(request)
+	await execute()
+
+	if (error.value) {
+		alert(`Error: ${error.value}`)
+	} else {
+		emit('reservation_confirmed', reservation)
+		console.log('res suc')
+	}
+}
+
 async function fetchConfigurations() {
+	console.log(startdate)
+	console.log(enddate)
+
+	console.log(typeof startdate, startdate);
+	console.log(typeof enddate, enddate);
 	const query = {
 		hotel_id: hotel_id,
-		guests: 2
+		guests: 2,
+		start_date: startdate,
+		end_date: enddate
 	}
 	const url = API_URL + '/get/configuration?'+ new URLSearchParams(query)
 	const request = new Request(url)
@@ -63,22 +108,143 @@ const totalPrice = computed(() => {
 	return (addonsPrice.value + configurationPrice.value) * daysBetween(startdate, enddate)
 })
 
+
+function tryOpenModal() {
+	if (!selectedConfiguration.value.id) {
+		alert('Select a room configuration before reserving.');
+		return;
+	}
+
+	showModal.value = true;
+}
+
+const showModal = ref(false)
+const formName = ref('')
+const formSurname = ref('')
+const formPhone_number = ref('')
+const formPayment_data = ref('')
+
 </script>
 
 <template>
-  <h1>Reservation</h1>
-  <span>Current total: {{ totalPrice }}</span>
-  <AddonSelector
-    :addons="addons"
-    v-model="selectedAddons" />
+  <div class="res">
+    <h1>Reservation</h1>
+    <span>Current total: {{ totalPrice }}$</span>
+    <AddonSelector
+      :addons="addons"
+      v-model="selectedAddons" />
 
-  <ConfigurationSelector
-    :configurations="configurations"
-    v-model="selectedConfiguration" />
+    <ConfigurationSelector
+      :configurations="configurations"
+      v-model="selectedConfiguration" />
+    <br>
+
+    <!-- Button to open the modal -->
+    <!-- <button
+      @click="showModal = true"
+      :disabled="!selectedConfiguration.id">
+      Reserve
+    </button> -->
+
+    <button @click="tryOpenModal">
+      Reserve
+    </button>
+
+    <!-- Modal -->
+    <div v-if="showModal">
+      <h2>Reservation ditails</h2>
+      <br>
+      single beds: {{ selectedConfiguration.single_beds }}
+      <br>
+      double beds: {{ selectedConfiguration.double_beds }}
+      <br>
+      <div v-if="selectedAddons.length">
+        Choosen additional amenities
+        <li
+          v-for="addon in selectedAddons"
+          :key="addon.id">
+          {{ addon.name }} - {{ addon.price }} zł/dzień
+        </li>
+      </div>
+      Total price
+      {{ totalPrice }}$
+
+      <h2>Enter your details</h2>
+      <form @submit.prevent="reserveRoom">
+        <label>
+          First name
+        </label>
+        <input
+          type="text"
+          name="name"
+          v-model="formName"
+          maxlength="25"
+          required
+        >
+        <label>
+          Last name
+        </label>
+        <input
+          type="text"
+          name="surname"
+          v-model="formSurname"
+          maxlength="25"
+          required
+        >
+        <label>
+          Phone number
+        </label>
+        <input
+          type="text"
+          name="phone_number"
+          v-model="formPhone_number"
+          maxlength="25"
+          required
+        >
+        <h3>Payment info</h3>
+
+        <label>
+          Bank account number
+        </label>
+        <input
+          type="text"
+          name="payment_data"
+          v-model="formPayment_data"
+          maxlength="25"
+          required
+        >
+
+        <div style="padding-top: 10px;">
+          <span style="padding: 5px;">
+            <button type="submit">Confirm</button>
+          </span>
+          <span>
+            <button type="button" @click="showModal = false">Cancel</button>
+          </span>
+        </div>
+      </form>
+    </div>
+  </div>
 </template>
 
 
 
 <style>
+.res button {
+	padding: 8px 12px;
+	font-size: 1rem;
+	border: none;
+	border-radius: 4px;
+	background-color: rgb(00, 77, 85);
+	color: white;
+	cursor: pointer;
+}
 
+.res button:hover {
+  background-color: rgb(0, 54, 60);
+}
+
+.res button {
+	transition: background-color 0.1s ease;
+}
 </style>

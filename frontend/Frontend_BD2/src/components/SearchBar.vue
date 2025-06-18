@@ -17,6 +17,8 @@ function constructRequest(query) {
 
 async function search() {
 	const parsedDateRange = parseDateRange(formDateRange.value)
+	console.log(parsedDateRange)
+
 	const query = {
 		city: formCity.value,
 		startdate: parsedDateRange[0],
@@ -66,8 +68,10 @@ const formDateRange = ref(debugDates)
         range
         :enable-time-picker="false"
         style="padding-top: 1px; padding-left:2px; padding-right: 2px;"
-        :min-date="new Date()"
       />
+
+
+      <!-- :min-date="new Date()" -->
 
       <input
         type="number"
@@ -86,7 +90,7 @@ const formDateRange = ref(debugDates)
 
 <style>
 #search {
-	max-width: 70%;
+	max-width: 60%;
   margin: auto;
   padding: 1%;
 }
