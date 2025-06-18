@@ -25,60 +25,63 @@ const { id: hotel_id, addons} = props.hotel
 const configurations = ref([])
 
 async function reserveRoom() {
-	const reservation = {
-		room_id: selectedConfiguration.value["id"],
-		hotel_id: hotel_id,
-		start_date: startdate,
-		end_date: enddate,
-		addons: selectedAddons.value.map(addon => addon.id),
-		customer: {
-			name: formName.value,
-			surname: formSurname.value,
-			phone_number: formPhone_number.value
-		},
-		payment_info: {
-			payment_type: "przelew",
-			payment_data: formPayment_data.value,
-			amount: totalPrice.value
+	// console.log(typeof startdate)
+	if (startdate) {
+		const reservation = {
+			room_id: selectedConfiguration.value["id"],
+			hotel_id: hotel_id,
+			start_date: startdate,
+			end_date: enddate,
+			addons: selectedAddons.value.map(addon => addon.id),
+			customer: {
+				name: formName.value,
+				surname: formSurname.value,
+				phone_number: formPhone_number.value
+			},
+			payment_info: {
+				payment_type: "przelew",
+				payment_data: formPayment_data.value,
+				amount: totalPrice.value
+			}
 		}
-	}
 
-	const url = API_URL + '/reserve/room'
-	const request = new Request(url, {
-		method: "POST",
-		body: JSON.stringify(reservation),
-		headers: {
-			"Content-Type": "application/json"
-		}})
-	const { error, execute } = useFetch(request)
-	await execute()
+		const url = API_URL + '/reserve/room'
+		const request = new Request(url, {
+			method: "POST",
+			body: JSON.stringify(reservation),
+			headers: {
+				"Content-Type": "application/json"
+			}})
+		const { error, execute } = useFetch(request)
+		await execute()
 
-	if (error.value) {
-		alert(`Error: ${error.value}`)
-	} else {
-		emit('reservation_confirmed', reservation)
-		console.log('res suc')
+		if (error.value) {
+			alert(`Error: ${error.value}`)
+		} else {
+			emit('reservation_confirmed', reservation)
+			console.log('res suc')
+		}
 	}
 }
 
 async function fetchConfigurations() {
-	console.log(startdate)
-	console.log(enddate)
+	// if (typeof startdate == typeof "") {
+	if (startdate) {
+		const query = {
+			hotel_id: hotel_id,
+			guests: 2,
+			start_date: startdate,
+			end_date: enddate
+		}
+		const url = API_URL + '/get/configuration?'+ new URLSearchParams(query)
+		const request = new Request(url)
 
-	console.log(typeof startdate, startdate);
-	console.log(typeof enddate, enddate);
-	const query = {
-		hotel_id: hotel_id,
-		guests: 2,
-		start_date: startdate,
-		end_date: enddate
+		const { data, execute } = useFetch(request)
+		await execute()
+		configurations.value = data.value || []
+
 	}
-	const url = API_URL + '/get/configuration?'+ new URLSearchParams(query)
-	const request = new Request(url)
 
-	const { data, execute } = useFetch(request)
-	await execute()
-	configurations.value = data.value || []
 }
 
 fetchConfigurations()

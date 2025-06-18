@@ -17,7 +17,6 @@ function constructRequest(query) {
 
 async function search() {
 	const parsedDateRange = parseDateRange(formDateRange.value)
-	console.log(parsedDateRange)
 
 	const query = {
 		city: formCity.value,
