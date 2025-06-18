@@ -221,7 +221,10 @@ func (hotelRepository *HotelRepository) GetHotelsSearchQuery(searchQuery *schema
 		FROM hotels h 
 			INNER JOIN addresses a on a.id=h.address_id
 			INNER JOIN rooms r on r.hotel_id=h.id
-		WHERE a.city like @city AND r.single_bed_num + r.double_bed_num * 2 >= @guests;`
+		WHERE a.city like @city AND r.single_bed_num + r.double_bed_num * 2 >= @guests
+		and (SELECT count(r.id)
+			FROM rooms r INNER JOIN reservations re on r.id=re.room_id
+			WHERE end_date >= '` + searchQuery.StartDate + `' and start_date <= '`+ searchQuery.EndDate +`') > 0;`
 	
 	args := pgx.NamedArgs{
 		"city": searchQuery.City,
