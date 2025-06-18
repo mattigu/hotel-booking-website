@@ -14,7 +14,7 @@ function addReviewToHotel(newReview) {
 	reviews.unshift(newReview)
 }
 
-const {name, description, star_standard, address, amenities, photo_url, reviews} = props.hotel
+const {name, description, star_standard, address, amenities, avg_rating, rating_count, photo_url, reviews} = props.hotel
 const {street, city, house_number, country} = address
 </script>
 <template>
@@ -49,6 +49,14 @@ const {street, city, house_number, country} = address
   <div class="reviews" v-if="hotel">
     <hr>
     <h2>Reviews</h2>
+
+    <div class="review_stats">
+      <vue3StarRatings
+        v-model="avg_rating"
+        :disable-click="true" />
+      {{ avg_rating }} average over {{ rating_count }} reviews
+    </div>
+
     <ReviewForm @review_posted="addReviewToHotel" />
 
     <div class="review_grid">
@@ -70,6 +78,12 @@ const {street, city, house_number, country} = address
     width: 480px;
     border-radius: 5%;
 	aspect-ratio: 1;
+}
+
+.review_stats {
+	display: flex;
+	align-items: center;
+	padding-bottom: 10px;
 }
 
 .hotel_top {
