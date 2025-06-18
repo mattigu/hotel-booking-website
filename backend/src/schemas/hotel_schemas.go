@@ -26,6 +26,7 @@ type HotelSearchQueryDetails struct {
 }
 
 type RoomConfiguration struct {
+	Id			int `json:"id"`
 	SingleBeds 	int	`json:"single_beds"`
 	DoubleBeds 	int	`json:"double_beds"`
 	Price		int	`json:"price"`

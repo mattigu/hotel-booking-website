@@ -68,8 +68,10 @@ func (hotelHandler *HotelHandler) GetHotelsSearchQuery(responseWriter http.Respo
 func (handler *HotelHandler) GetRoomConfigurations(res http.ResponseWriter, req *http.Request) error{
 	hotelId, _ := strconv.Atoi(req.URL.Query().Get("hotel_id"))
 	guests, _ := strconv.Atoi(req.URL.Query().Get("guests"))
+	startDate := req.URL.Query().Get("start_date")
+	endDate := req.URL.Query().Get("end_date")
 
-	roomConfigurations := handler.service.GetRoomConfigurations(hotelId, guests)
+	roomConfigurations := handler.service.GetRoomConfigurations(hotelId, guests, startDate, endDate)
 	
 	return json.NewEncoder(res).Encode(roomConfigurations)
 }

@@ -135,10 +135,13 @@ func (repository *HotelRepository) getAddressFor(id int) schemas.AddressData{
 	return address
 }
 
-func (hotelRepository *HotelRepository) getRoomsForGuests(hotelId int, guests int) ([]schemas.RoomConfiguration){
-	query := `SELECT single_bed_num, double_bed_num, base_price
+func (hotelRepository *HotelRepository) getRoomsForGuests(hotelId int, guests int, start_date string, end_date string) ([]schemas.RoomConfiguration){
+	query := `SELECT id, single_bed_num, double_bed_num, base_price
 		FROM rooms
-		WHERE hotel_id=@id and single_bed_num + double_bed_num * 2 >= @guests;`
+		WHERE hotel_id=@id and single_bed_num + double_bed_num * 2 >= @guests
+		and id not in (SELECT r.id
+			FROM rooms r INNER JOIN reservations re on r.id=re.room_id
+			WHERE end_date >= '` + start_date + `' and start_date <= '`+ end_date +`');`
 	
 	args := pgx.NamedArgs{
 		"id": hotelId,
@@ -154,6 +157,7 @@ func (hotelRepository *HotelRepository) getRoomsForGuests(hotelId int, guests in
 	for rows.Next() {
 		var room schemas.RoomConfiguration
 		err := rows.Scan(
+			&room.Id,
 			&room.SingleBeds,
 			&room.DoubleBeds,
 			&room.Price,
@@ -254,9 +258,9 @@ func (hotelRepository *HotelRepository) getReservedHotelsId(city string, startDa
 	return nil, nil
 }
 
-func (repository *HotelRepository) GetRoomConfigurations(hotelId int, guests int) ([]schemas.RoomConfiguration, error) {
+func (repository *HotelRepository) GetRoomConfigurations(hotelId int, guests int, startDate string, endDate string) ([]schemas.RoomConfiguration, error) {
 	var roomConfiguration []schemas.RoomConfiguration;
-	roomConfiguration = repository.getRoomsForGuests(hotelId, guests)
+	roomConfiguration = repository.getRoomsForGuests(hotelId, guests, startDate, endDate)
 
 	return roomConfiguration, nil
 }
