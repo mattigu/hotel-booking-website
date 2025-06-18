@@ -6,6 +6,8 @@ import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 
 const API_URL = inject('API_URL')
+const searchDetails = inject('search_details')
+
 const emit = defineEmits(['search_complete'])
 
 function constructRequest(query) {
@@ -21,6 +23,7 @@ async function search() {
 		enddate: parsedDateRange[1],
 		guests: formNumPeople.value
 	}
+	searchDetails.value = query
 	const request = constructRequest(query)
 
 	const { data: hotels, execute } = useFetch(request);
@@ -38,7 +41,7 @@ function parseDateRange(dateRange) {
 }
 
 
-let debugDates = [new Date('2025-05-24'), new Date('2025-05-24')]
+let debugDates = [new Date('2025-07-18'), new Date('2025-07-21')]
 
 const formCity = ref('Warszawa')
 const formNumPeople = ref(3)

@@ -1,4 +1,8 @@
 <script setup>
+import { ref, provide } from 'vue';
+
+const currentSearchDetails = ref({})
+provide('search_details', currentSearchDetails)
 
 </script>
 

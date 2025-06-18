@@ -2,6 +2,7 @@
 import vue3StarRatings from "vue3-star-ratings"
 import ReviewForm from '@/components/ReviewForm.vue'
 import ReviewBox from '@/components/ReviewBox.vue'
+import ReservationPanel from "./ReservationPanel.vue"
 
 const props = defineProps({
 	hotel: {
@@ -45,6 +46,11 @@ const {street, city, house_number, country} = address
     <h3>{{ amenity.name }}</h3>
     <p>{{ amenity.description }}</p>
   </template>
+
+
+  <ReservationPanel
+    :hotel="hotel" />
+
 
   <div class="reviews" v-if="hotel">
     <hr>
