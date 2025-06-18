@@ -40,7 +40,7 @@ func (hotelRepository *HotelRepository) GetAll() ([]schemas.Hotel, error) {
 
 func (repository *HotelRepository) getAmenitiesFor(id int) []schemas.Amenities{
 	query := `SELECT a.id, a.name, a.description 
-	FROM hotel_amenity_types a INNER JOIN hotel_amenities ha on ha.hotel_amenity_type=a.id
+	FROM amenities a INNER JOIN hotel_amenities ha on ha.amenity_id=a.id
 	WHERE ha.hotel_id=@id`
 
 	args := pgx.NamedArgs{

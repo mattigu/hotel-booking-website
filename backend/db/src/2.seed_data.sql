@@ -22,21 +22,27 @@ INSERT INTO "hotels" ("address_id", "name", "description", "star_standard") VALU
 (4, 'Hotel Elegance', 'Urokliwy hotel butikowy w Paryżu.', 5),
 (5, 'Hotel Panorama', 'Hotel z widokiem na centrum Madrytu.', 5);
 
--- Dane dla tabeli hotel_amenity_types
-INSERT INTO "hotel_amenity_types" ("name", "description") VALUES
+-- Dane dla tabeli amenities
+INSERT INTO "amenities" ("name", "description") VALUES
 ('Basen', 'Basen dostępny dla gości.'),
 ('Siłownia', 'W pełni wyposażona siłownia.'),
 ('Spa', 'Relaksujące usługi spa.'),
 ('Parking', 'Parking na miejscu.'),
-('WiFi', 'Darmowy szybki internet.');
+('WiFi', 'Darmowy szybki internet.'),
+('Telewizor', 'Telewizor'),
+('Mini Bar', 'W pełni zaopatrzony mini bar.'),
+('Lodówka', 'Lodówka w pokoju.'),
+('Klimatyzacja', 'Pokój z klimatyzacją.'),
+('Balkon', 'Pokój z prywatnym balkonem.'),
+('Ekspres do kawy', 'Ekspres do kawy w pokoju.');
 
 -- Dane dla tabeli hotel_amenities
-INSERT INTO "hotel_amenities" ("hotel_id", "hotel_amenity_type", "price") VALUES
-(1, 1, 0),
-(1, 2, 0),
-(2, 3, 100),
-(3, 4, 0),
-(4, 5, 0);
+INSERT INTO "hotel_amenities" VALUES
+(1, 1),
+(1, 2),
+(2, 3),
+(3, 4),
+(4, 5);
 
 -- Dane dla tabeli rooms
 INSERT INTO "rooms" ("hotel_id", "room_number", "single_bed_num", "double_bed_num", "base_price") VALUES
@@ -46,22 +52,14 @@ INSERT INTO "rooms" ("hotel_id", "room_number", "single_bed_num", "double_bed_nu
 (3, 301, 0, 2, 450),
 (4, 401, 1, 1, 550);
 
--- Dane dla tabeli room_amenity_types
-INSERT INTO "room_amenity_types" ("name", "description") VALUES
-('Telewizor', 'Telewizor'),
-('Mini Bar', 'W pełni zaopatrzony mini bar.'),
-('Lodówka', 'Lodówka w pokoju.'),
-('Klimatyzacja', 'Pokój z klimatyzacją.'),
-('Balkon', 'Pokój z prywatnym balkonem.'),
-('Ekspres do kawy', 'Ekspres do kawy w pokoju.');
 
 -- Dane dla tabeli room_amenities
-INSERT INTO "room_amenities" ("room_id", "room_amenitiy", "price") VALUES
-(1, 1, 0),
-(1, 2, 20),
-(2, 3, 0),
-(3, 4, 30),
-(4, 5, 10);
+INSERT INTO "room_amenities" VALUES
+(1, 6),
+(1, 7),
+(2, 8),
+(3, 9),
+(4, 10);
 
 -- Dane dla tabeli customers
 INSERT INTO "customers" ("name", "surname", "phone_number", "email") VALUES
