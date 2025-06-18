@@ -107,7 +107,7 @@ func (repository *ReservationRepository) calculatePrice(addons []int) int{
 }
 
 func (repository *ReservationRepository) addUser(user *schemas.UserData) error{
-	query := `INSERT INTO customers ("name", "surname", "phone_number") 
+	query := `INSERT INTO customers ("name", "surname", "phone_number")
 		VALUES (@name, @surname, @phoneNumber)`
 
 	args := pgx.NamedArgs{
@@ -137,7 +137,7 @@ func (repository *ReservationRepository) addPaymentInfo (paymentInfo *schemas.Pa
 
 	query := `INSERT INTO payments ("id", "payment_type", "payment_data", "due_date", "amount", "fulfilled")
 	VALUES((SELECT max(id) + 1 FROM payments), '`+paymentInfo.PaymentType+`', '`+
-	paymentInfo.PaymentData+`', '`+ formattedDate +`', '` + 
+	paymentInfo.PaymentData+`', '`+ formattedDate +`', '` +
 	strconv.Itoa(paymentInfo.Amount)+`', true)
 	RETURNING id;`
 
@@ -163,7 +163,7 @@ func (repository *ReservationRepository) ReserveRoom(reservationData *schemas.Re
 		repository.getRoomPrice(reservationData.RoomId, int(math.Round(duration.Hours()/24)))
 	paymentId := repository.addPaymentInfo(&reservationData.PaymentId)
 
-	query := `INSERT INTO reservations ("id", "customer_id", "hotel_id", "room_id", "start_date", "end_date", "payment_info_id") 
+	query := `INSERT INTO reservations ("id", "customer_id", "hotel_id", "room_id", "start_date", "end_date", "payment_info_id")
 		VALUES ((SELECT max(id) + 1 FROM reservations), @customerId, @hotelId, @roomId, @startDate, @endDate, @paymentInfoId)`
 
 	args := pgx.NamedArgs{

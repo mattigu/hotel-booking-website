@@ -57,10 +57,10 @@ func (hotelHandler *HotelHandler) GetHotelsSearchQuery(responseWriter http.Respo
 
 	// geting data for the URL parameters
 	hotels, err := hotelHandler.service.GetHotelsSearchQuery(&searchQuery)
-	if err != nil { 
-		return app_err.WithHTTPStatus(err, http.StatusBadRequest) 
+	if err != nil {
+		return app_err.WithHTTPStatus(err, http.StatusBadRequest)
 	}
-	
+
 	// w.WriteHeader(http.Status...) Change status code here if needed
 	return json.NewEncoder(responseWriter).Encode(hotels)
 }
@@ -72,7 +72,7 @@ func (handler *HotelHandler) GetRoomConfigurations(res http.ResponseWriter, req 
 	endDate := req.URL.Query().Get("end_date")
 
 	roomConfigurations := handler.service.GetRoomConfigurations(hotelId, guests, startDate, endDate)
-	
+
 	return json.NewEncoder(res).Encode(roomConfigurations)
 }
 
@@ -80,6 +80,6 @@ func (handler *HotelHandler) GetAddons(res http.ResponseWriter, req *http.Reques
 	hotelId, _ := strconv.Atoi(req.URL.Query().Get("hotel_id"))
 
 	roomConfigurations := handler.service.GetAddons(hotelId)
-	
+
 	return json.NewEncoder(res).Encode(roomConfigurations)
 }

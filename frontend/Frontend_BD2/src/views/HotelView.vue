@@ -2,8 +2,6 @@
 import { inject, ref } from 'vue'
 import { useFetch } from '@/composables/useFetch'
 
-import ReviewForm from '@/components/ReviewForm.vue'
-import ReviewBox from '@/components/ReviewBox.vue'
 import HotelPage from '@/components/HotelPage.vue'
 
 const API_URL = inject('API_URL')
@@ -16,12 +14,9 @@ const props = defineProps({
 	}
 })
 
-function addReviewToHotel(newReview) {
-	hotel.value.reviews.unshift(newReview)
-}
 
 async function loadHotel() {
-	const request = new Request(`${API_URL}/get/hotel/${props.id}`, { method: 'GET' })
+	const request = new Request(`${API_URL}/get/hotel/${props.id}?guests=${1}`, { method: 'GET' })
 	const { data, execute } = useFetch(request)
 	await execute()
 	hotel.value = data.value
@@ -35,20 +30,5 @@ loadHotel()
 <template>
   <div v-if="hotel" class="hotel_view">
     <HotelPage :hotel="hotel" />
-  </div>
-
-  <div class="reviews" v-if="hotel">
-    <hr>
-    <h2>Reviews</h2>
-    <ReviewForm @review_posted="addReviewToHotel" />
-
-    <template
-      v-for="review in hotel.reviews"
-      :key="review.username"
-    >
-      <!-- Use a better key for this loop later -->
-
-      <ReviewBox :review="review" />
-    </template>
   </div>
 </template>
