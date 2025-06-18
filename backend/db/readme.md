@@ -3,7 +3,7 @@
 ### Model ER
 ![ER model](/backend/db/images/BD2%20-%20ER%20diagram.png)
 
-### Opis modelu ER
+## Opis modelu ER
 
 **Encja:** `Hotel`
 
@@ -72,8 +72,10 @@
 | Email        | Adres e-mail klienta.   |
 | Phone Number | Numer telefonu klienta. |
 
-### Model logiczny
+## Model logiczny
 ![Logical model](/backend/db/images/BD2_model_relacyjny.png)
+
+## Opis modelu logicznego
 
 **Tabela:** `hotels` \
 Zawiera podstawowe informacje dotyczące kżdego hotelu.
@@ -273,3 +275,64 @@ Tabela łącząca rezerwację z zajętymi przez nią pokojami.
 | reservation\_id | integer      | not null       | Klucz obcy do `reservations`. |
 | room\_id        | integer      | not null       | Klucz obcy do `rooms`.        |
 
+## Dostępne procedury
+
+**delete_past_due_reservations** \
+Usuwa z bazy danych wszystkie rezerwacje, którym przedawnił się termin płatności i nie zostały jeszcze opłacone.
+
+---
+**calculate_hotel_ratings** \
+Aktualizuje tabelę agregacyjną hotel ratings aby zawierała one bieżące wartości średnich ocen dla każdego z hoteli.
+
+---
+**daily_update** \
+Procedura wywoływana raz dziennie, wywołująca procedury aktualizujace / czyszczące bzę danych.
+
+## Dostępne funkcje
+
+**calculate_hotel_vacancy** \
+Oblicza dostępność pokoi w danym hotelu w podanym okresie czasu. Każdy pokój ma tutaj równą wagę - pokój 4-osobowy ma taką samą wagę co pokój 2-osobowy.
+
+Argumenty:
+- hotel_id_input `INTEGER`- id hotelu, dla którego będziemy liczyli dostępność
+- start_date_input `DATE`- początek okresu, dla którego liczymy dostępność
+- end_date_input `DATE` - koniec okresu, dla krórego liczymy dostępność
+
+Zwraca:
+- vacancy_rate `NUMERIC` - procent miejsc w hotelu, które były dostępne przez ten okres czasu.
+
+---
+**add_new_user** \
+Dodaje nowego użytkownika jeżeli taki jeszcze nie występuje w bazie danych,
+w przeciwnym wypadku go nie dodaje i zwraca o tym informację.
+
+Argumenty:
+- name `text` - imię dodawanej osoby
+- surname `text` - nazwisko dodawanej osoby
+- phone_number `text` - numer telefonu dodawanej osoby
+
+Zwraca:
+- found_customer `boolean` - wartość będzie true, jeżeli osoba została dodana, w przeciwnym wypadku false
+
+---
+**is_room_available** \
+Funkcja sprawdzająca, czy dany pokój jest dostępny w zadanym okresie.
+
+Argumenty:
+- room_id_input `INTEGER` - id pokoju, którego sprawdzamy dostępność
+- start_date_input `DATE`- początek okresu, w którym sprawdzamy dostępność
+- end_date_input `DATE` - koniec okresu, w którym liczymy dostępność
+
+Zwraca:
+- `boolean` - wartość TRUE, jeżeli pokój jest dosępny w tym okresie. Jeżeli istnieje konflitująca rezerwacja, zwraca FALSE.
+
+## Istniejące wyzwalacze
+
+**after_reservation_insert** \
+Po dodaniu rezerwacji automatycznie dodaje niezbędne rekordy do tabeli łączącej *reservation_rooms*.
+
+---
+**after_review_insert** \
+Automatycznie aktualizuje wartości w tabeli analitycznej *hotel_ratings* po zostawieniu recenzji przez jakiegoś użytkownika.
+
+---
