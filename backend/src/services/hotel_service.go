@@ -27,8 +27,8 @@ func (hotelService *HotelService) GetHotelsSearchQuery(searchQuery *schemas.Hote
 	return hotelService.repository.GetHotelsSearchQuery(searchQuery)
 }
 
-func (service *HotelService) GetRoomConfigurations(hotelId int, guests int) []schemas.RoomConfiguration{
-	val, _ := service.repository.GetRoomConfigurations(hotelId, guests)
+func (service *HotelService) GetRoomConfigurations(hotelId int, guests int, startDate string, endDate string) []schemas.RoomConfiguration{
+	val, _ := service.repository.GetRoomConfigurations(hotelId, guests, startDate, endDate)
 	return val
 }
 

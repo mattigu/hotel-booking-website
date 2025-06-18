@@ -139,24 +139,20 @@ odpowiedź:
 
 --------------------
 
-### 6. /get/configuration?hotel_id=[id]&guests=[guests]
+### 6. /get/configuration?hotel_id=[id]&guests=[guests]&start_date=[date]&end_date=[date]
 
 przykładowe zapytanie:
-`localhost:3000/get/configuration?hotel_id=1&guests=2`
+`localhost:3000/get/configuration?hotel_id=1&guests=2&start_date=2025-06-20&end_date=2025-06-26`
 
 odpowiedź:
 
 ```json
 [
     {
+        "id":1,
         "single_beds":1,
         "double_beds":1,
         "price":350
-    },
-    {
-        "single_beds":2,
-        "double_beds":0,
-        "price":280
     }
 ]
 ```
