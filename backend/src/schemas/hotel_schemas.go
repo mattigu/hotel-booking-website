@@ -48,7 +48,7 @@ type HotelSpecificData struct {
 	Amenities 		[]Amenities	`json:"amenities"`
 	Reviews 		[]ReviewData `json:"reviews"`
 	RoomConfigurations []RoomConfiguration `json:"room_configurations"`
-	Addons			[]Addons	`json:"addons"`
+	Addons			[]AddonData	`json:"addons"`
 }
 
 type AddonData struct {

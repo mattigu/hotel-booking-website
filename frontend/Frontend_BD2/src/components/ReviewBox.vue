@@ -25,7 +25,6 @@ const date = "11/12/2025"
     <vue3StarRatings
       v-model="rating"
       :disable-click="true" />
-    <span class="review_date">{{ date }}</span>
 
     <p class="review_text">
       {{ review_text }}

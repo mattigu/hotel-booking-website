@@ -75,22 +75,22 @@ zwraca:
 
 ```
 -------------------
-### 3. POST: /reserve/room  
+### 3. POST: /reserve/room
 
 przykładowe dane w zapytaniu:
 ```json
 {
-    "room_id": 2, 
-    "hotel_id":1, 
-    "start_date":"2025-05-24", 
-    "end_date":"2025-05-26", 
+    "room_id": 2,
+    "hotel_id":1,
+    "start_date":"2025-05-24",
+    "end_date":"2025-05-26",
     "addons" : [ 1, 2 ],
     "customer":
     {
         "name": "Andrzej",
         "surname": "Andrzejowski",
         "phone_number": "999999999"
-    }, 
+    },
     "payment_info":
     {
         "payment_type": "przelew",

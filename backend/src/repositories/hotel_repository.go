@@ -39,7 +39,7 @@ func (hotelRepository *HotelRepository) GetAll() ([]schemas.Hotel, error) {
 }
 
 func (repository *HotelRepository) getAmenitiesFor(id int) []schemas.Amenities{
-	query := `SELECT a.id, a.name, a.description 
+	query := `SELECT a.id, a.name, a.description
 	FROM hotel_amenity_types a INNER JOIN hotel_amenities ha on ha.hotel_amenity_type=a.id
 	WHERE ha.hotel_id=@id`
 
@@ -105,7 +105,7 @@ func (repository *HotelRepository) getSomeReviewsFor(id int) []schemas.ReviewDat
 
 func (repository *HotelRepository) getAddressFor(id int) schemas.AddressData{
 	query := `SELECT d.city, d.street, d.house_number, c.name
-	FROM hotels h 
+	FROM hotels h
 		INNER JOIN addresses d on h.address_id=d.id
 		INNER JOIN countries c on d.country_id=c.id
 	WHERE h.id=@id`
@@ -139,7 +139,7 @@ func (hotelRepository *HotelRepository) getRoomsForGuests(hotelId int, guests in
 	query := `SELECT single_bed_num, double_bed_num, base_price
 		FROM rooms
 		WHERE hotel_id=@id and single_bed_num + double_bed_num * 2 >= @guests;`
-	
+
 	args := pgx.NamedArgs{
 		"id": hotelId,
 		"guests": guests,
@@ -205,6 +205,7 @@ func (repository *HotelRepository) GetById(id int, guests int) (schemas.HotelSpe
 	hotel.Address = repository.getAddressFor(id)
 	hotel.Id = id
 	hotel.AvgRating, hotel.RatingsCount, err = repository.getAverageRating(id)
+	hotel.Addons, _ = repository.GetAddons(id)
 
 	if err != nil {
 		return schemas.HotelSpecificData{}, fmt.Errorf("unable to query hotels: %w", err)
@@ -214,11 +215,11 @@ func (repository *HotelRepository) GetById(id int, guests int) (schemas.HotelSpe
 
 func (hotelRepository *HotelRepository) GetHotelsSearchQuery(searchQuery *schemas.HotelSearchQueryDetails) ([]schemas.HotelInfo, error){
 	query := `SELECT DISTINCT on (h.id) h.id, h.name, h.star_standard, r.single_bed_num, r.double_bed_num, r.base_price
-		FROM hotels h 
+		FROM hotels h
 			INNER JOIN addresses a on a.id=h.address_id
 			INNER JOIN rooms r on r.hotel_id=h.id
 		WHERE a.city like @city AND r.single_bed_num + r.double_bed_num * 2 >= @guests;`
-	
+
 	args := pgx.NamedArgs{
 		"city": searchQuery.City,
 		"guests": searchQuery.Guests,
@@ -265,7 +266,7 @@ func (repository *HotelRepository) GetAddons(hotelId int) ([]schemas.AddonData, 
 	query := `SELECT id, name, price
 	FROM reservation_addons
 	WHERE hotel_id = @hotelId`
-	
+
 	args := pgx.NamedArgs{
 		"hotelId": hotelId,
 	}
